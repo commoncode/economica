@@ -2,6 +2,18 @@
 
 Economica is an online economic framework for building out business models online.
 
+
+## Economica Enterprise
+
+Economica adapts perfectly to the Enterprise with the Resource, Event, Agent model.  Enterprise often consist of 1 to _n_ Agents and each of those Agents may maintain a separate Store, create a Market (with Stores) or maintain a Store within a Market (MarketStore).
+
+The Product base is instantiated upon an Agent's Store, pulling together Currency, Region and Lingual parameters.  The Product base is serialised into a key/value store with an interchangeable Backend (Mongo/Redis/Memcached etc.) and consumed by an application environement of choice, such as Angular or Meteor.
+
+The Client Application interacts with the Economica API to carry out Economic Patterns such as Sales Purchases, Sales Orders or Recurring Subscriptions.
+
+The Client Application can implement its own Cart logic, however, the Economica API also implements Cart.
+
+
 ## Dependencies
 
 + Canvas
@@ -10,6 +22,7 @@ Economica is an online economic framework for building out business models onlin
 + Platforms
 + REA (Foundational polymorphic Resource, Event & Agent models)
 + Market (REA Market entities & patterns)
+++ Purchase order patterns
 
 Not yet built:
 + Stores
