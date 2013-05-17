@@ -1,0 +1,24 @@
+# Non-Django packages
+celery==3.0.12
+Pillow==1.7.7
+python-memcached==1.48
+pytz==2013b
+
+## CommonCode apps
+git+ssh://git@github.com/commoncode/django-tracking.git@3e21cf1cdd865c0ee265f7080eb15813e5329177
+git+ssh://git@github.com/commoncode/entropy.git@7804efe9c6319623de5a1df000076fa19d54ff75
+git+ssh://git@github.com/commoncode/infrastruction.git@43b66892fc2988d89471632fbbe3caa993902d5d
+git+ssh://git@github.com/commoncode/menus.git@f02c6698f6b488940305c223aaa34c5d2c5dcb2e
+git+ssh://git@github.com/commoncode/pages.git@360207230e658f9362e464f34370fae30e266bef
+git+ssh://git@github.com/commoncode/platforms.git@e8c03e213fedbb5ed9789cece3ee8f779095b624
+
+# Third Party apps
+git+ssh://git@github.com/callowayproject/dynamicloader.git@fd54e893ace49f11394119ca29b49b8331d21f0d
+
+django-celery==3.0.11
+django-extensions==1.0.0
+django-filebrowser==3.5.1
+django-grappelli==2.4.3
+django-posts==0.1.1
+easy-thumbnails==1.1
+South==0.7.6
