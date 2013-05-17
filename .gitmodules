@@ -1,0 +1,3 @@
+[submodule "fabfile"]
+	path = fabfile
+	url = git@github.com:commoncode/fabfile.git
