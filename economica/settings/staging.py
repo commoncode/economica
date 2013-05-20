@@ -6,10 +6,10 @@ TEMPLATE_DEBUG = DEBUG
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
+        'NAME': 'economica_staging',
+        'USER': 'economica',
+        'PASSWORD': 'hgSDfgoi3dg',
+        'HOST': 'commoncode.cupxs40in6f6.ap-northeast-1.rds.amazonaws.com',
         'PORT': '',
     }
 }
