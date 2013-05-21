@@ -3,7 +3,6 @@ vhosts = {
         'hosts': ['economica.commoncode.com.au'],
         'manage': './manage.py',
         'settings': 'economica.settings.production',
-        'celery': True,
         'requirements': 'requirements/production.txt'
     },
 
@@ -12,7 +11,6 @@ vhosts = {
         'hosts': ['economica.commoncode.com.au'],
         'manage': './manage.py',
         'settings': 'economica.settings.staging',
-        'requirements': 'requirements/staging.txt',
-        'celery': True
+        'requirements': 'requirements/staging.txt'
     }
 }
