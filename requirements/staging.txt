@@ -1,0 +1,5 @@
+# Production Requirements
+-r _base.txt
+
+MySQL-python==1.2.4
+gunicorn==0.14.6

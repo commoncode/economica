@@ -8,7 +8,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'economica_staging',
         'USER': 'economica',
-        'PASSWORD': 'commoncode',
+        'PASSWORD': 'hgSDfgoi3dg',
         'HOST': 'commoncode.cupxs40in6f6.ap-northeast-1.rds.amazonaws.com',
         'PORT': '',
     }

@@ -1,5 +1,6 @@
 from economica.settings.common import *
 
+
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
@@ -20,7 +21,6 @@ import djcelery
 djcelery.setup_loader()
 INSTALLED_APPS = INSTALLED_APPS + ['djcelery',]
 BROKER_URL = 'amqp://economica_production:economica_production@queue.commoncode.com.au:5672/economica_production'
-
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
