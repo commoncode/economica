@@ -20,3 +20,24 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+
+References & Inspirations
+=========================
+
+* `Plata Shop Models`_
+* `LFS Shop Models`_
+
+.. _Plata Shop Models: https://github.com/matthiask/plata/blob/next/plata/shop/models.py
+.. _LFS Shop Models: https://github.com/diefenbach/django-lfs/blob/master/lfs/core/models.py
+
+
+Writing Docs
+------------
+
+http://docs.writethedocs.org/en/latest/
+
+
+Entity Aspects
+~~~~~~~~~~~~~~
+
+Here's minor text
