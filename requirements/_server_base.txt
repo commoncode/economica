@@ -1,0 +1,20 @@
+# Common Requirements for Server Deploys, Production, Staging & Development Testing
+-r _base.txt
+
+
+# Non-editable git repo dependancies
+
+## Common Code apps
+git+ssh://git@github.com/commoncode/entropy.git@7804efe9c6319623de5a1df000076fa19d54ff75
+git+ssh://git@github.com/commoncode/menus.git@f02c6698f6b488940305c223aaa34c5d2c5dcb2e
+git+ssh://git@github.com/commoncode/pages.git@360207230e658f9362e464f34370fae30e266bef
+git+ssh://git@github.com/commoncode/platforms.git@e8c03e213fedbb5ed9789cece3ee8f779095b624
+
+
+# Python packages
+
+# PostgreSQL
+psycopg2==2.5
+
+# WSGI
+gunicorn==0.14.6

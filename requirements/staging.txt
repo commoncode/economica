@@ -1,5 +1,6 @@
-# Production Requirements
+# Staging Server Requirements
 -r _base.txt
 
-MySQL-python==1.2.4
+# PostgreSQL
 gunicorn==0.14.6
+psycopg2==2.5

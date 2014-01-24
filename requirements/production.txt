@@ -1,6 +1,2 @@
-# Production Requirements
--r _base.txt
-
-# PostgreSQL
-gunicorn==0.14.6
-psycopg2==2.5
+# Production Server Requirements
+-r _server_base.txt

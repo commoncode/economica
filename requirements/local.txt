@@ -1,0 +1,15 @@
+# Local Development Machine Requirements (note that we bypass _server_base.txt)
+-r _base.txt
+
+
+# Editable Git Repo Common Code apps 
+
+## — update SHA keys in _server_base.txt
+## - bump minor version numbers in setup.py to force upgrade during deploy
+
+-e git+ssh://git@github.com/commoncode/entropy.git#egg=entropy
+-e git+ssh://git@github.com/commoncode/menus.git#egg=menus
+-e git+ssh://git@github.com/commoncode/pages.git#egg=pages
+-e git+ssh://git@github.com/commoncode/posts.git#egg=posts
+-e git+ssh://git@github.com/commoncode/platforms.git#egg=platforms
+-e git+ssh://git@github.com/commoncode/rea.git#egg=rea

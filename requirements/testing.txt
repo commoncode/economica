@@ -1,4 +1,4 @@
-# Development Test Server Requirements
+# Test Server Requirements
 -r _base.txt
 
 coverage==3.6
@@ -11,4 +11,4 @@ pylint==0.28.0
 # Django Debugging Tools
 django-debug-toolbar==0.9.4
 django-devserver==0.4.0
-ipython==0.13.1ls
+ipython==0.13.1
