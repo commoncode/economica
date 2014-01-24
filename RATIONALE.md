@@ -1,3 +1,18 @@
+
+
+Economica is an online economic framework for building out business models online.
+
+## Quotes not Carts
+
+It is also a Shopping Cart — however, we handle it a little differently.  Instead of the 'Cart' metaphor being used in our model definitions, we use the word Quote.  Every 'cart' in the Shopping Cart sense, is a Quote in preparation.
+
+To preserve the expected user experience, however, we let you label a Quote whatever for you users, Carts, Baskets, Bags or any other collective noun you like.
+
+### Why not a Shopping Cart
+
+We believe that the Shopping Cart metaphor, and that we place Products into a Cart, in which we Checkout — whilst serving as a neat UX device; has led us to program ourselves into a corner...
+
+
 ## Economica Enterprise
 
 Economica adapts perfectly to the Enterprise with the Resource, Event, Agent model.  Enterprise often consist of 1 to _n_ Agents and each of those Agents may maintain a separate Store, create a Market (with Stores) or maintain a Store within a Market (MarketStore).
