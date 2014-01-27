@@ -1,14 +1,17 @@
-from entropy.models import \
-    DescriptionMixin, \
+from django.db import models
+
+from entropy.base import \
+    TextMixin, \
     EnabledMixin, \
     OrderingMixin, \
     StartEndMixin, \
     TitleMixin
+from rea.models.core import REAModel
 
 
 class Offer(EnabledMixin, StartEndMixin):
     """
-    An Offer is an instantiation of a Contract for a Resource as Products or 
+    An Offer is an instantiation of a Contract for a Resource as Products or
     Services upon a given Platform.
 
     An Offer may change according to conditions or rules.
@@ -22,7 +25,7 @@ class Offer(EnabledMixin, StartEndMixin):
     determine things like Price (under discount or not) or a Product offered under
     a Sales Order or Subscriptions.
 
-    The use of Offers opens the door to create binding Contracts, enforceable by 
+    The use of Offers opens the door to create binding Contracts, enforceable by
     Workflow or Finite State Machines for Goods & Services offered under any crazy
     business model that the Enterprise Agent can imagine.
 
@@ -40,12 +43,12 @@ class Offer(EnabledMixin, StartEndMixin):
     # end (optional)
     # enabled
 
-    contract = models.ForeignKey('rea.contracts.Contract')
+    contract = models.ForeignKey('rea.Contract')
 
-    platforms = models.ManyToManyField('platform.Platform')
+    platforms = models.ManyToManyField('platforms.Platform')
 
 
-class OfferAspect(PolyMorphicModel, DescriptionMixin, EnabledMixin, OrderingMixin, TitleMixin):
+class OfferAspect(REAModel, TextMixin, EnabledMixin, OrderingMixin, TitleMixin):
     """
     Each Offer must specify one or more Aspect Conditions in which the Contract Offer
     might be valid.
@@ -110,7 +113,7 @@ class OfferIndividualAgent(OfferAspect):
     """
     Theoretically offer a unique set of Agents an Offer Aspect based on some kind of
     activity.
-    
+
     For example, if the Agent has had this Offer or a Related Offer in their Quote/Cart before
     then perhaps offer them a better deal?
     """

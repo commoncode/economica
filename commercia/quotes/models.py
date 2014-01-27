@@ -1,10 +1,12 @@
+from django.db import models
 
+from entropy.base import CreatedMixin, ModifiedMixin
 
 
 class Quote(CreatedMixin, ModifiedMixin):
     """
     The Quote model is symmetrical to the common Cart model in the majority
-    of Shopping Cart models.  We're employing the Quote nomenclature to 
+    of Shopping Cart models.  We're employing the Quote nomenclature to
     free ourselves from the Product in Cart metaphor which has ultimately
     proved limiting in expression of more sophisticated economic patterns.
 
@@ -36,7 +38,7 @@ class QuoteItem(models.Model):
 
     """
 
-    offer = models.ForeignKey('commercia.offers.Offer')  # the primary offer
+    offer = models.ForeignKey('offers.Offer')  # the primary offer
 
 
     @property
