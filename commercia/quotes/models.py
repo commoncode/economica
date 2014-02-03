@@ -28,18 +28,22 @@ class Quote(CreatedMixin, ModifiedMixin):
     # modified_by
 
     platform = models.ForeignKey('platforms.Platform')
-    recieving_agent = models.ForeignKey('rea.Agent')
+
+    recieving_agent = models.ForeignKey(
+        'rea.Agent',
+        related_name='%(app_label)s_%(class)s_receiving_agents')
+    providing_agent = models.ForeignKey(
+        'rea.Agent',
+        related_name='%(app_label)s_%(class)s_providing_agents')
 
 
 class QuoteItem(models.Model):
     """
     Quote (line) Item
 
-
     """
 
     offer = models.ForeignKey('offers.Offer')  # the primary offer
-
 
     @property
     def contract(self):
