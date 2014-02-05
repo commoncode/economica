@@ -64,8 +64,6 @@ class Offer(EnabledMixin, StartEndMixin):
 
     platforms = models.ManyToManyField('platforms.Platform')
 
-    offer_price = models.FloatField(blank=True)  # Need to confirm the best field type for prices.
-
 
 class OfferAspect(REAModel, TextMixin, EnabledMixin, OrderingMixin, TitleMixin):
     """
@@ -104,6 +102,13 @@ class OfferAspect(REAModel, TextMixin, EnabledMixin, OrderingMixin, TitleMixin):
     chain_evaluation = models.BooleanField()  # evaluate in combination with previous others / evaluate separately
     stop_evaluating = models.BooleanField()  # stop evaluating all other aspects beyond this one.
     override_evaluation = models.BooleanField()  # override all previous offer aspect chains
+
+
+class OfferPrice(OfferAspect):
+    """
+    Offer Price for the given Contract
+    """
+    offer_price = models.FloatField(blank=True)  # Need to confirm the best field type for prices.
 
 
 class OfferDiscount(OfferAspect):
