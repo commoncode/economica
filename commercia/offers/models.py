@@ -1,15 +1,13 @@
 from django.db import models
 
-from entropy.base import \
-    TextMixin, \
-    EnabledMixin, \
-    OrderingMixin, \
-    StartEndMixin, \
-    TitleMixin
-from rea.models.core import REAModel
+from cqrs.noconflict import classmaker
+from entropy.base import (
+    TextMixin, EnabledMixin, OrderingMixin, StartEndMixin, TitleMixin
+)
+from cqrs.mongo import CQRSSerializer, CQRSPolymorphicModel
 
 
-class Offer(EnabledMixin, StartEndMixin):
+class Offer(CQRSSerializer, EnabledMixin, StartEndMixin):
     """
     An Offer is an instantiation of a Contract for a Resource as Products or
     Services upon a given Platform.
@@ -55,6 +53,7 @@ class Offer(EnabledMixin, StartEndMixin):
         way, Offers are reuseable.
 
     """
+    __metaclass__ = classmaker()
 
     # start
     # end (optional)
@@ -65,7 +64,7 @@ class Offer(EnabledMixin, StartEndMixin):
     platforms = models.ManyToManyField('platforms.Platform')
 
 
-class OfferAspect(REAModel, TextMixin, EnabledMixin, OrderingMixin, TitleMixin):
+class OfferAspect(CQRSPolymorphicModel, TextMixin, EnabledMixin, OrderingMixin, TitleMixin):
     """
     Each Offer must specify one or more Aspect Conditions in which the Contract Offer
     might be valid.
