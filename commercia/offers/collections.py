@@ -7,9 +7,10 @@ class OfferDocumentCollection(DRFDocumentCollection):
     """
     A denormalized collection of `Contract`
     """
-    name = "offer"
+    name = 'offer'
     model = Offer
-    serializer_class = "offers.serializers.OfferSerializer"
+    serializer_class = 'commercia.offers.serializers.OfferSerializer'
+    name = 'economica__offers'
 
 
 mongodb.register(OfferDocumentCollection())

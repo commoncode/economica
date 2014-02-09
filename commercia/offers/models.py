@@ -4,10 +4,10 @@ from cqrs.noconflict import classmaker
 from entropy.base import (
     TextMixin, EnabledMixin, OrderingMixin, StartEndMixin, TitleMixin
 )
-from cqrs.mongo import CQRSSerializer, CQRSPolymorphicModel
+from cqrs.mongo import CQRSPolymorphicModel, CQRSModel
 
 
-class Offer(CQRSSerializer, EnabledMixin, StartEndMixin):
+class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
     """
     An Offer is an instantiation of a Contract for a Resource as Products or
     Services upon a given Platform.
@@ -59,9 +59,9 @@ class Offer(CQRSSerializer, EnabledMixin, StartEndMixin):
     # end (optional)
     # enabled
 
-    contracts = models.ManyToManyField('rea.Contract')
+    # contracts = models.ManyToManyField('rea.Contract')
 
-    platforms = models.ManyToManyField('platforms.Platform')
+    # platforms = models.ManyToManyField('platforms.Platform')
 
 
 class OfferAspect(CQRSPolymorphicModel, TextMixin, EnabledMixin, OrderingMixin, TitleMixin):

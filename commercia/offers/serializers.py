@@ -1,4 +1,4 @@
-from cqrs.mongo CQRSSerializer
+from cqrs.mongo import CQRSSerializer
 
 from .models import Offer
 
@@ -8,7 +8,7 @@ class OfferSerializer(CQRSSerializer):
     Serializer for the `SubscriptionContract` model
     """
 
-    aspects = OfferAspectSerializer()
+    # aspects = OfferAspectSerializer()
 
     class Meta:
         model = Offer
@@ -23,7 +23,7 @@ class OfferAspectSerializer(CQRSSerializer):
     """
 
     class Meta:
-        model = OfferAspect
+        model = 'offers.OfferAspect'
 
         # dynamically add fields according to the downcast
         fields = (
