@@ -8,7 +8,7 @@ from cqrs.mongo import CQRSPolymorphicModel, CQRSModel
 
 
 class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
-    """
+    '''
     An Offer is an instantiation of a Contract for a Resource as Products or
     Services upon a given Platform.
 
@@ -52,20 +52,43 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
         The Platforms aka sales channels underwhich the Contract or Contracts mix are Offered.  In this
         way, Offers are reuseable.
 
-    """
+    '''
     __metaclass__ = classmaker()
 
     # start
     # end (optional)
     # enabled
 
-    # contracts = models.ManyToManyField('rea.Contract')
+    platforms = models.ManyToManyField('platforms.Platform')
 
-    # platforms = models.ManyToManyField('platforms.Platform')
+
+class OfferResourceContract(CQRSModel):
+    '''
+    Conjunct the Contract under which the Resource is Offered, e.g.:
+
+        1 Book under SalesOrder
+        1 Cosmetic under Autoship (params)
+    '''
+
+    offer = models.ForeignKey(
+        Offer,
+        related_name='resource_contracts'
+    )
+    contract = models.ForeignKey('rea.Contract')
+    resource = models.ForeignKey('rea.Resource')
+
+    quantity = models.FloatField()
+
+    def __unicode__(self):
+        return '%s of %s under %s' % (
+            self.quantity,
+            self.resource, 
+            self.contract
+        )
 
 
 class OfferAspect(CQRSPolymorphicModel, TextMixin, EnabledMixin, OrderingMixin, TitleMixin):
-    """
+    '''
     Each Offer must specify one or more Aspect Conditions in which the Contract Offer
     might be valid.
 
@@ -88,7 +111,7 @@ class OfferAspect(CQRSPolymorphicModel, TextMixin, EnabledMixin, OrderingMixin, 
     `override_evaluation`
         the Offer Aspect or Offer Aspect Chain overrides all previous
 
-    """
+    '''
 
     # title
     # short_title
@@ -104,26 +127,37 @@ class OfferAspect(CQRSPolymorphicModel, TextMixin, EnabledMixin, OrderingMixin, 
 
 
 class OfferPrice(OfferAspect):
-    """
+    '''
     Offer Price for the given Contract
-    """
+
+    Assumes the Exhange Resource is Cash?
+    '''
     offer_price = models.FloatField(blank=True)  # Need to confirm the best field type for prices.
 
 
+class OfferResource(OfferAspect):
+    '''
+    Optionally specify other Resource to satisfy the exchange,
+    e.g. One Pig for 4 Chickens
+    '''
+    resource = models.ForeignKey('rea.Resource')
+    quantity = models.FloatField()
+
+
 class OfferDiscount(OfferAspect):
-    """
+    '''
     Offer a Discount in the form of a Percentage or Deduction
-    """
+    '''
     offer_discount = models.FloatField()
     offer_discount_is_percentage = models.BooleanField(default=True)
 
 
 class OfferValidUntil(OfferAspect, StartEndMixin):
-    """
+    '''
     Here we add a Validity period for an Aspect Condition of the Offer.
 
     This Aspect might be used to create a Flash Sale for the parent Offer
-    """
+    '''
 
     # start
     # end (optional)
@@ -131,43 +165,57 @@ class OfferValidUntil(OfferAspect, StartEndMixin):
 
 
 class OfferRelated(OfferAspect):
-    """
+    '''
     Here we might add Related Offers to the Primary Offer.  This might take the form
     of Offering a closely Related Product to accompany the Primary Offer.
 
     Setting the `related_contract_price` to zero or the `related_contract_discount` to 100%
     results in a Free Gift
-    """
+    '''
 
     related_offer = models.ForeignKey(
         'Offer',
-        related_name="%(app_label)s_%(class)s_related_offer")
+        related_name='%(app_label)s_%(class)s_related_offer')
     related_contract_price = models.FloatField()
     related_contract_discount = models.FloatField()
 
 
 class OfferFreeGift(OfferAspect):
-    """
+
+    def __unicode__(self):
+        return '%s of %s under %s' % (
+            self.quantity,
+            self.resource, 
+            self.contract
+        )
+    '''
     The existence of this Offer Aspect enables the combining with another Offer
     for Free
-    """
+    '''
     free_offer = models.ForeignKey(
         'Offer',
-        related_name="%(app_label)s_%(class)s_free_offer")
+        related_name='%(app_label)s_%(class)s_free_offer')
 
 
 class OfferFreeShipping(OfferAspect):
-    """
+    '''
     Offer Free Shipping
-    """
+
+    def __unicode__(self):
+        return '%s of %s under %s' % (
+            self.quantity,
+            self.resource, 
+            self.contract
+        )
+    '''
     offer_free_shipping = models.BooleanField()
 
 
 class OfferNForOne(OfferAspect):
-    """
+    '''
     Offer a quantity of the same Contract for the same Product with Product Variants.
 
-    """
+    '''
 
     offer_quantity = models.IntegerField()  # 2 or more
 
@@ -179,7 +227,7 @@ class OfferNForOne(OfferAspect):
 
 
 class OfferIndividualAgent(OfferAspect):
-    """
+    '''
     Theoretically offer a unique set of Agents an Offer Aspect based on some kind of
     activity.
 
@@ -188,7 +236,7 @@ class OfferIndividualAgent(OfferAspect):
 
     Note: these are best created with an algorithm.  Rule-based Offer Aspects will be better applicable.
 
-    """
+    '''
 
     agents = models.ManyToManyField('rea.Agent')
 
