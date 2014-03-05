@@ -1,5 +1,6 @@
 import datetime
 import factory
+import random
 
 from django.contrib.webdesign import lorem_ipsum
 
@@ -47,3 +48,39 @@ class OfferResourceContractFactory(factory.django.DjangoModelFactory):
 
 class OfferAspectFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'offers.OfferAspect'
+
+    offer = factory.SubFactory(OfferFactory)
+
+    title = factory.LazyAttribute(
+        lambda o: lorem_ipsum.words(2, common=False).title())
+
+    chain_evaluation = factory.LazyAttribute(
+        lambda o: not not random.randrange(0, 2))
+
+    stop_evaluating = factory.LazyAttribute(
+        lambda o: not not random.randrange(0, 2))
+
+    override_evaluation = factory.LazyAttribute(
+        lambda o: not not random.randrange(0, 2))
+
+
+class OfferDiscountFactory(OfferAspectFactory):
+    FACTORY_FOR = 'offers.OfferDiscount'
+
+    offer_discount = factory.LazyAttribute(
+        lambda o: random.randrange(0, 101))
+
+    offer_discount_is_percentage = factory.LazyAttribute(
+        lambda o: not not random.randrange(0, 2))
+
+
+class OfferNForOneFactory(OfferAspectFactory):
+    FACTORY_FOR = 'offers.OfferNForOne'
+
+    title = factory.LazyAttribute(
+        lambda o: "%s for one" % this.offer_quantity)
+
+    offer_quantity = random.randrange(0, 5)
+
+
+

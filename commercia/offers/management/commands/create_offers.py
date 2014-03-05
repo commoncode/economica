@@ -13,16 +13,22 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        # i = 0
-        # while i < 10:
-        #     offer_instance = factories.OfferFactory()
-        #     print "OfferInstance: %s :: title: %s" % (
-        #         offer_instance,
-        #         offer_instance.title)
-        #     i+=1
+        i = 0
+        while i < 10:
+            offer_instance = factories.OfferFactory()
+            print "OfferInstance: %s :: title: %s" % (
+                offer_instance,
+                offer_instance.title)
 
+            # onfo_instance = factories.OfferNForOneFactory()
+            # print "OfferNForOneFactory: %s :: title: %s" % (
+            #     onfo_instance,
+            #     onfo_instance.title)
 
-        offers = models.Offer.objects.all()
+            i+=1
+
+# 
+        # offers = models.Offer.objects.all()
 
         for offer in offers:
             print "Adding Resource Contract: %s " % (offer.title)
@@ -31,11 +37,18 @@ class Command(BaseCommand):
             print "Added: %s" % orc_instance
 
             print "Altering tittle of: %s" % orc_instance
-            offer.title = lorem_ipsum.words(1, common=False).title()
+            offer.title = lorem_ipsum.words(3, common=False).title()
             print "To: %s" % offer.title
             offer.save()
 
-        # [
-        #     o.delete()
-        #     for o in offers
-        # ]
+        # for offer in offers:
+        #     print "Adding Offer Aspect: %s " % (offer.title)
+
+        #     oad_instance = factories.OfferDiscountFactory(
+        #         offer=offer)
+
+
+        offers.delete()
+
+
+

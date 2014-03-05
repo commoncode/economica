@@ -226,17 +226,27 @@ class OfferNForOne(OfferAspect):
     # validate on save offer_quantity
 
 
-class OfferIndividualAgent(OfferAspect):
+class OfferToAgent(OfferAspect):
     '''
-    Theoretically offer a unique set of Agents an Offer Aspect based on some kind of
-    activity.
+    Theoretically offer a unique set of Agents an Offer Aspect based 
+    on some kind of activity.
 
-    For example, if the Agent has had this Offer or a Related Offer in their Quote/Cart before
-    then perhaps offer them a better deal?
+    For example, if the Agent has had this Offer or a Related Offer 
+    in their Quote/Cart before then perhaps offer them a better deal?
 
-    Note: these are best created with an algorithm.  Rule-based Offer Aspects will be better applicable.
+    Note: these are best created with an algorithm.  Rule-based 
+    Offer Aspects will be better applicable.
+
+    Combine this with other Offer Aspects such as:
+
+        OfferDiscount
+        OfferValidUntil
+
+    To give limited time offers based on 
 
     '''
 
     agents = models.ManyToManyField('rea.Agent')
+
+    reason = models.TextField()
 
