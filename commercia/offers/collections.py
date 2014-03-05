@@ -22,7 +22,7 @@ class OfferResourceContractDocumentCollection(DRFDocumentCollection):
     name = 'offerresourcecontract'
     model = OfferResourceContract
     serializer_class = 'commercia.offers.serializers.OfferResourceContractSerializer'
-    parent_collection = OfferDocumentCollection
+    # parent_collection = OfferDocumentCollection
     name = 'economica__offers__resourcecontracts'
 
 
