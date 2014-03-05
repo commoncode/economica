@@ -64,6 +64,21 @@ class OfferAspectFactory(factory.django.DjangoModelFactory):
         lambda o: not not random.randrange(0, 2))
 
 
+class OfferPriceFactory(OfferAspectFactory):
+    FACTORY_FOR = 'offers.OfferPrice'
+
+    offer_price = factory.LazyAttribute(
+        lambda o: round(random.random() * 100, 2))
+
+
+class OfferResourceFactory(OfferAspectFactory):
+    FACTORY_FOR = 'offers.OfferResource'
+
+    resource = factory.SubFactory('products.Product')
+    quantity = factory.LazyAttribute(
+        lambda o: random.randrange(0, 100))
+
+
 class OfferDiscountFactory(OfferAspectFactory):
     FACTORY_FOR = 'offers.OfferDiscount'
 
@@ -77,10 +92,18 @@ class OfferDiscountFactory(OfferAspectFactory):
 class OfferNForOneFactory(OfferAspectFactory):
     FACTORY_FOR = 'offers.OfferNForOne'
 
-    title = factory.LazyAttribute(
-        lambda o: "%s for one" % this.offer_quantity)
+    offer_quantity = factory.LazyAttribute(
+        lambda o: random.randrange(1, 10))
 
-    offer_quantity = random.randrange(0, 5)
+    @factory.post_generation
+    def create_title(self, create, extracted, **kwargs):
+        self.title = "%s for one" % self.offer_quantity
+        self.save()
+
+
+class OfferToAgentsFactory(OfferAspectFactory):
+    FACTORY_FOR = 'offers.OfferToAgent'
+
 
 
 

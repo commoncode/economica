@@ -1,6 +1,4 @@
-from .models import (
-    Offer, OfferAspect, OfferResourceContract
-)
+from .models import *
 
 from cqrs.mongo import mongodb, DRFDocumentCollection
 
