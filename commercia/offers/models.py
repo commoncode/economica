@@ -68,6 +68,12 @@ class OfferResourceContract(CQRSModel):
 
         1 Book under SalesOrder
         1 Cosmetic under Autoship (params)
+
+    The related parent Offer class is empty and invalid unless
+    it has at least one Resource under Offer of a binding Contract.
+
+    The Offer model then allows combining of Resource Contracts
+    to support the concept of Product Bundling
     '''
 
     offer = models.ForeignKey(
