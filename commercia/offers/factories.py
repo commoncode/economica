@@ -2,7 +2,7 @@ import datetime
 import factory
 import random
 
-from django.contrib.webdesign import lorem_ipsum
+from fakers import lipservice
 
 from faker import Factory
 
@@ -14,7 +14,7 @@ class OfferFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'offers.Offer'
 
     title = factory.LazyAttribute(
-        lambda o: lorem_ipsum.words(5, common=False).title())
+        lambda o: lipservice.words(3, common=False).title())
 
     start = factory.LazyAttribute(
         lambda o: datetime.datetime.now())
@@ -52,7 +52,7 @@ class OfferAspectFactory(factory.django.DjangoModelFactory):
     offer = factory.SubFactory(OfferFactory)
 
     title = factory.LazyAttribute(
-        lambda o: lorem_ipsum.words(2, common=False).title())
+        lambda o: lipservice.words(2, common=False).title())
 
     chain_evaluation = factory.LazyAttribute(
         lambda o: not not random.randrange(0, 2))
