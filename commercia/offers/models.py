@@ -1,10 +1,11 @@
 from django.db import models
 
 from cqrs.noconflict import classmaker
+from cqrs.mongo import CQRSPolymorphicModel, CQRSModel
 from entropy.base import (
     TextMixin, EnabledMixin, OrderingMixin, StartEndMixin, TitleMixin
 )
-from cqrs.mongo import CQRSPolymorphicModel, CQRSModel
+from entropy.fields import PriceField
 
 
 class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
@@ -67,6 +68,7 @@ class OfferResourceContract(CQRSModel):
     Conjunct the Contract under which the Resource is Offered, e.g.:
 
         1 Book under SalesOrder
+        2 Bookmarks under SalesOrder
         1 Cosmetic under Autoship (params)
 
     The related parent Offer class is empty and invalid unless
@@ -170,6 +172,14 @@ class OfferValidUntil(OfferAspect, StartEndMixin):
     pass
 
 
+class OfferStart(OfferAspect):
+    pass
+
+
+class OfferEnd(OfferAspect):
+    pass
+
+
 class OfferRelated(OfferAspect):
     '''
     Here we might add Related Offers to the Primary Offer.  This might take the form
@@ -256,3 +266,19 @@ class OfferToAgent(OfferAspect):
 
     reason = models.TextField()
 
+
+class OfferCoupon(OfferAspect):
+    '''
+    Coupons Rules
+
+    '''
+    # XXX Coupons have rules. Add them to determine validity.
+    coupon = models.ForeignKey('coupons.Coupon')
+    
+
+class OfferOnQuote(OfferAspect):
+    '''
+    Watch the quote for given conditions and provide an
+    Offer.  Such as OfferFreeGift.
+    '''
+    minimum = PriceField()

@@ -6,36 +6,40 @@ from entropy.base import (
 )
 
 from rea.models import Resource
+from rea.settings import REA_PROVIDING_AGENT_MODEL, REA_REPORTING_AGENT_ID
 
 
 '''
-EntityAspect for Custom Products.
 The Economica Product Libraries
+
+
+EntityAspect for Custom Products.
 
 '''
 
 
 class Product(Resource):
     '''
-    Economica Product
+    Economica Product.
 
-    Classifications
-
-        + Tangible
-        + Intangible
+    The Product model is expected to be sub classed by a Domain
+    Specific model.  Currently, Economica defines a selection of
+    Archetype Products, such as Book, Cosmetic, Garment and so on.
+    It's further expected that the Enterprise might provide its own
+    sub classed definitions, such as EnterpriseBook.
 
     '''
 
-    is_tangible = models.BooleanField(default=True)
-
-
+# 
 # Products
+# 
 
 class Book(Product):
-    pass
+    
+    isbn = models.CharField(
+        blank=True,
+        max_length=1024)
 
-class Garment(Product):
-    pass
 
 class Cosmetic(Product):
     '''
@@ -45,9 +49,32 @@ class Cosmetic(Product):
     shades = models.ManyToManyField('Color')
 
 
+class Food(Product):
+    pass
+
+
+class Garment(Product):
+    pass
+
+
+class Software(Product):
+    pass
+
+
+class Vehicle(Product):
+    pass
+
+    # make
+    # model
+    # year
+
+
 # Variants
 
 class Variant(CQRSModel):
+    '''
+
+    '''
     
     product = models.ForeignKey('Product')
 
@@ -71,9 +98,52 @@ class VariantColorAspect(VariantAspect):
     pass
 
 
-# Variant Aspect Qualities
+# 
+# Variant Templates
+# 
 
-class Color(CQRSModel, SlugMixin, TitleMixin):
+class VariantTemplate(CQRSModel):
+    '''
+    Variant Templates are used to define re-usable
+    template patterns for Variants, VariantAspects & 
+    Variant Aspect Qualities.
+
+    '''
+    product = models.ForeignKey(
+        'contenttypes.ContentType')
+    # XXX limit choices to ContentTypes that are a child
+    # to Product.
+
+    agent = models.ForeignKey(
+        REA_PROVIDING_AGENT_MODEL)
+
+
+class VariantTemplateAspect(CQRSPolymorphicModel):
+    '''
+    Variant Aspect related to Variant Template w/ Aspect Qualities
+    '''
+
+    variant_template = models.ForeignKey('VariantTemplate')
+    variant_aspect = models.ForeignKey('VariantAspect')
+
+
+class VariantTemplateAspectQuality(CQRSModel):
+    '''
+    Conjunct the Variant Template Aspect with a Quality.
+    '''
+    variant_template_aspect = models.ForeignKey('VariantTemplateAspect')
+
+
+
+# 
+# Variant Aspect Qualities
+# 
+
+class VariantAspectQuality(CQRSPolymorphicModel, SlugMixin, TitleMixin):
+    pass
+
+
+class Color(VariantAspectQuality):
     
     hex = models.CharField(
         max_length='6')
@@ -88,17 +158,20 @@ class Color(CQRSModel, SlugMixin, TitleMixin):
         # return h, s, l
 
 
-class Size(CQRSModel):
+class Size(VariantAspectQuality):
     pass
 
-class Property(CQRSModel):
+
+class Property(VariantAspectQuality):
     '''
     Cover: hard or soft
     '''
     pass
 
 
+# 
 # Categories
+# 
 
 class Category(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
     
@@ -116,7 +189,10 @@ class Collection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
     pass
 
 
+# 
 # Collections
+# 
+
 
 # TODO Create an abstract pattern to express the re-usable Aspect / 
 # AspectInstance / AspectRule pattern

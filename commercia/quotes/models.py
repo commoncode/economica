@@ -32,9 +32,14 @@ class Quote(CreatedMixin, ModifiedMixin):
     recieving_agent = models.ForeignKey(
         'rea.Agent',
         related_name='%(app_label)s_%(class)s_receiving_agents')
+
     providing_agent = models.ForeignKey(
         'rea.Agent',
         related_name='%(app_label)s_%(class)s_providing_agents')
+
+
+    def total_cost(self):
+        pass
 
 
 class QuoteItem(models.Model):

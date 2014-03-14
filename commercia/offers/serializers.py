@@ -31,6 +31,9 @@ class OfferNForOneSerializer(serializers.ModelSerializer):
         model = OfferNForOne
 
 
+# ... add all the other classes
+
+
 class OfferAspectSerializer(CQRSSerializer):
     '''
     Serializer for Polymorphic Model OfferAspect.
@@ -40,16 +43,17 @@ class OfferAspectSerializer(CQRSSerializer):
         model = OfferAspect
 
     def to_native(self, obj):
-        """
+        '''
         Because OfferAspect is Polymorphic
-        """
-
-
+        '''
         if isinstance(obj, OfferDiscount):
             return OfferDiscountSerializer(obj).to_native(obj)
 
         if isinstance(obj, OfferNForOne):
             return OfferNForOneSerializer(obj).to_native(obj)
+
+        # add more of create a class factory as above
+
         return super(OfferAspectSerializer, self).to_native(obj)
 
 

@@ -30,5 +30,5 @@ class Command(BaseCommand):
             orc_instance = factories.OfferResourceContractFactory(offer=offer)
             print "Added: %s" % orc_instance
 
-            # trigger serialisation
+            # trigger serialisation 
             offer.save()
