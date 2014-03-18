@@ -271,9 +271,14 @@ class OfferCoupon(OfferAspect):
     '''
     Coupons Rules
 
+    The Offer is redeemable against a Coupon.  What is a Coupon?
+
+    Coupons are a Resource that can be exchanged under certain
+    bound Contractual Conditions.
+
     '''
     # XXX Coupons have rules. Add them to determine validity.
-    coupon = models.ForeignKey('coupons.Coupon')
+    coupon = models.ForeignKey('coupons.Coupon') # XXX relate to a Contract for now.
     
 
 class OfferOnQuote(OfferAspect):
