@@ -3,6 +3,8 @@ import factory
 
 from django.contrib.webdesign import lorem_ipsum
 
+from fakers import lipservice
+
 from faker import Factory
 
 
@@ -13,7 +15,7 @@ class ProductFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'products.Product'
 
     title = factory.LazyAttribute(
-        lambda o: lorem_ipsum.words(5, common=False).title())
+        lambda o: lipservice.words(5, common=False).title())
 
     @factory.post_generation
     def variants(self, create, extracted, **kwargs):
@@ -26,6 +28,8 @@ class ProductFactory(factory.django.DjangoModelFactory):
             # A list of variants were passed in, use them
             for variant in extracted:
                 self.variants.add(variant)
+
+
 
 # 
 # Product Factories

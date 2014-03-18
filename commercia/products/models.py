@@ -30,6 +30,10 @@ class Product(Resource):
 
     '''
 
+    sku = models.CharField(
+        blank=True,
+        max_length=512)
+
 # 
 # Products
 # 
@@ -38,15 +42,11 @@ class Book(Product):
     
     isbn = models.CharField(
         blank=True,
-        max_length=1024)
+        max_length=512)
 
 
 class Cosmetic(Product):
-    '''
-
-    '''
-    
-    shades = models.ManyToManyField('Color')
+    pass
 
 
 class Food(Product):
@@ -73,7 +73,9 @@ class Vehicle(Product):
 
 class Variant(CQRSModel):
     '''
+    Product Variant.
 
+    Products define at least one Variant.
     '''
     
     product = models.ForeignKey('Product')
