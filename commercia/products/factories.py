@@ -3,7 +3,7 @@ import factory
 
 from django.contrib.webdesign import lorem_ipsum
 
-from fakers import lipservice
+from fakers import lipservice, cosmetics, garments, vehicles
 
 from faker import Factory
 
@@ -29,11 +29,9 @@ class ProductFactory(factory.django.DjangoModelFactory):
             for variant in extracted:
                 self.variants.add(variant)
 
-
-
 # 
 # Product Factories
-# 
+#
 
 class BookFactory(ProductFactory):
     FACTORY_FOR = 'products.Book'
@@ -44,6 +42,9 @@ class BookFactory(ProductFactory):
 class CosmeticFactory(ProductFactory):
     FACTORY_FOR = 'products.Cosmetic'
 
+    title = factory.LazyAttribute(
+        lambda o: cosmetics.words(3, common=False).title())
+
 
 class FoodFactory(ProductFactory):
     FACTORY_FOR = 'products.Food'
@@ -51,6 +52,9 @@ class FoodFactory(ProductFactory):
 
 class GarmentFactory(ProductFactory):
     FACTORY_FOR = 'products.Garment'
+
+    title = factory.LazyAttribute(
+        lambda o: garments.words(3, common=False).title())
 
 
 class SoftwareFactory(ProductFactory):
@@ -60,14 +64,17 @@ class SoftwareFactory(ProductFactory):
 class VehicleFactory(ProductFactory):
     FACTORY_FOR = 'products.Vehicle'
 
+    title = factory.LazyAttribute(
+        lambda o: vehicles.words(3, common=False).title())
+
     # make
     # model
     # registration
 
 
-# 
+#
 # Product Variants
-# 
+#
 
 
 class VariantFactory(factory.django.DjangoModelFactory):
