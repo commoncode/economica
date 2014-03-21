@@ -41,9 +41,10 @@ class OfferSerializer(CQRSSerializer):
         model = Offer
         fields = (
             'id', 
-            'title', 
+            'title',
             'short_title',
-            'resource_contracts'
+            'offer_aspects',
+            'resource_contracts',
         )
 
 
