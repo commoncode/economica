@@ -127,7 +127,10 @@ class OfferAspect(CQRSPolymorphicModel, TextMixin, EnabledMixin, OrderingMixin, 
     # order
     # enabled
 
-    offer = models.ForeignKey('Offer')
+    offer = models.ForeignKey(
+        'Offer',
+        related_name='offer_aspects'
+    )
 
     chain_evaluation = models.BooleanField()  # evaluate in combination with previous others / evaluate separately
     stop_evaluating = models.BooleanField()  # stop evaluating all other aspects beyond this one.
