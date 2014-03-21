@@ -1,3 +1,6 @@
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
+
 """
 Utility functions for generating "lorem ipsum" Latin text.
 """
@@ -28,7 +31,7 @@ WORDS = (
     'down to',
     'dressy',
     'drip-dry',
-    'décolleté',
+    # 'décolleté',
     'easy-care',
     'fitting',
     'flame-retardant',
