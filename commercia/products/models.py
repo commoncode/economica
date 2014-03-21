@@ -78,7 +78,9 @@ class Variant(CQRSModel):
     Products define at least one Variant.
     '''
     
-    product = models.ForeignKey('Product')
+    product = models.ForeignKey(
+        'Product',
+        related_name='variants')
 
 
 # Variant Aspects
@@ -89,14 +91,56 @@ class VariantAspect(CQRSPolymorphicModel):
 
 
 class VariantSizeAspect(VariantAspect):
-    pass
+    
+    size = models.ForeignKey('Size')
 
 
 class VariantShadeAspect(VariantAspect):
-    pass
+    
+    shade = models.ForeignKey('Color')
 
 
 class VariantColorAspect(VariantAspect):
+    
+    color = models.ForeignKey('Color')
+
+
+# 
+# Variant Aspect Qualities
+# 
+
+class VariantAspectQuality(CQRSPolymorphicModel, SlugMixin, TitleMixin):
+    pass
+
+
+class Color(VariantAspectQuality):
+    
+    hex = models.CharField(
+        max_length='6')
+
+    # def hsv(self):
+        # return h, s, v
+
+    # def rgb(self):
+        # return r, g, b
+
+    # def hsl(self):
+        # return h, s, l
+
+
+class Size(VariantAspectQuality):
+    
+    size = models.CharField(
+        max_length=128)
+
+    measure = models.CharField(
+        max_length=128)
+
+
+class Property(VariantAspectQuality):
+    '''
+    Cover: hard or soft
+    '''
     pass
 
 
@@ -134,41 +178,6 @@ class VariantTemplateAspectQuality(CQRSModel):
     Conjunct the Variant Template Aspect with a Quality.
     '''
     variant_template_aspect = models.ForeignKey('VariantTemplateAspect')
-
-
-
-# 
-# Variant Aspect Qualities
-# 
-
-class VariantAspectQuality(CQRSPolymorphicModel, SlugMixin, TitleMixin):
-    pass
-
-
-class Color(VariantAspectQuality):
-    
-    hex = models.CharField(
-        max_length='6')
-
-    # def hsv(self):
-        # return h, s, v
-
-    # def rgb(self):
-        # return r, g, b
-
-    # def hsl(self):
-        # return h, s, l
-
-
-class Size(VariantAspectQuality):
-    pass
-
-
-class Property(VariantAspectQuality):
-    '''
-    Cover: hard or soft
-    '''
-    pass
 
 
 # 

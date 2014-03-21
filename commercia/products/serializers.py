@@ -1,11 +1,26 @@
-from .models import Product
+from . import models
 
 from cqrs.mongo import CQRSPolymorphicSerializer
 
 
-class ProductSerializer(CQRSPolymorphicSerializer):
-    '''
-    Polymorphic serializer for the `Resource` model
-    '''
+
+class VariantAspectSerializer(CQRSPolymorphicSerializer):
+
     class Meta:
-        model = Product
+        model = models.VariantAspect
+
+
+class VariantSerlizer(CQRSPolymorphicSerializer):
+
+    aspects = VariantAspectSerializer(many=True)
+
+    class Meta:
+        model = models.Variant
+
+
+class ProductSerializer(CQRSPolymorphicSerializer):
+
+    variants = VariantSerlizer(many=True)
+
+    class Meta:
+        model = models.Product
