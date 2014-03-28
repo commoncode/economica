@@ -1,7 +1,7 @@
 from django.db import models
 
 from cqrs.noconflict import classmaker
-from cqrs.mongo import CQRSPolymorphicModel, CQRSModel
+from cqrs.models import CQRSPolymorphicModel, CQRSModel
 from entropy.base import (
     TextMixin, EnabledMixin, OrderingMixin, StartEndMixin, TitleMixin
 )

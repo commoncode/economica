@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from cqrs.mongo import CQRSSerializer, CQRSPolymorphicSerializer
+from cqrs.serializers import CQRSSerializer, CQRSPolymorphicSerializer
 from rea_serializers.serializers import ResourceSerializer
 
 from .models import *

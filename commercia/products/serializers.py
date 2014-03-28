@@ -1,6 +1,6 @@
 from . import models
 
-from cqrs.mongo import CQRSPolymorphicSerializer
+from cqrs.serializers import CQRSPolymorphicSerializer
 
 
 

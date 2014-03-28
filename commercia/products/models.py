@@ -1,6 +1,6 @@
 from django.db import models
 
-from cqrs.mongo import CQRSModel, CQRSPolymorphicModel
+from cqrs.models import CQRSModel, CQRSPolymorphicModel
 from entropy.base import (
     EnabledMixin, SlugMixin, TitleMixin
 )
