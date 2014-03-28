@@ -18,5 +18,5 @@ class Command(BaseCommand):
             try:
                 product.delete()
                 print 'deleted!'
-            except models.Product.DoesNotExist:
-                print 'wtf %s' % product
+            except models.Product.DoesNotExist as e:
+                print '%s :: %s' % (e, product)
