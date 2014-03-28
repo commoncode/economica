@@ -23,7 +23,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         i = 0
-        while i in range(20):
+        while i in range(5):
 
             product_factory = PRODUCT_FACTORIES[
                 random.randrange(0, len(PRODUCT_FACTORIES))
@@ -34,5 +34,12 @@ class Command(BaseCommand):
             print "Product: %s :: title: %s" % (
                 product_instance.__class__,
                 product_instance.title)
+
+            variant_instance = factories.VariantFactory(product=product_instance)
+            print "Added Variant %s to product %s" % (
+                variant_instance,
+                product_instance)
+
+    
 
             i+=1
