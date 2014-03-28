@@ -76,11 +76,8 @@ class VehicleFactory(ProductFactory):
 # Product Variants
 #
 
-
 class VariantFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'products.Variant'
 
     product = factory.SubFactory(ProductFactory)
-
-
 
