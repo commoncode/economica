@@ -4,7 +4,7 @@ from entropy.base import CreatedMixin, ModifiedMixin
 
 
 class Quote(CreatedMixin, ModifiedMixin):
-    """
+    '''
     The Quote model is symmetrical to the common Cart model in the majority
     of Shopping Cart models.  We're employing the Quote nomenclature to
     free ourselves from the Product in Cart metaphor which has ultimately
@@ -19,7 +19,7 @@ class Quote(CreatedMixin, ModifiedMixin):
     The Quote model has one or more related Quote Line Items of which contain an
     instantiated Contract Offer or Related Contract Offer...
 
-    """
+    '''
 
     # created_at
     # created_by
@@ -38,18 +38,23 @@ class Quote(CreatedMixin, ModifiedMixin):
         related_name='%(app_label)s_%(class)s_providing_agents')
 
 
-    def total_cost(self):
-        pass
+    def total(self):
+        '''
+        Recurse through the QuoteItems and Offers to tally
+        the cost from Offer.cost
+        '''
+
+         
 
 
 class QuoteItem(models.Model):
-    """
+    '''
     Quote (line) Item
 
-    """
+    '''
 
     offer = models.ForeignKey('offers.Offer')  # the primary offer
 
     @property
-    def contract(self):
-        return self.offer.contract
+    def resource_contracts(self):
+        return self.offer.resource_contracts
