@@ -4,9 +4,7 @@ from cqrs.mongo import mongodb, DRFDocumentCollection
 
 
 class OfferDocumentCollection(DRFDocumentCollection):
-    """
-    A denormalized collection of `Offers`
-    """
+
     name = 'offer'
     model = Offer
     serializer_class = 'commercia.offers.serializers.OfferSerializer'
@@ -14,9 +12,7 @@ class OfferDocumentCollection(DRFDocumentCollection):
 
 
 class OfferResourceContractDocumentCollection(DRFDocumentCollection):
-    """
-    A denormalized collection of `Offers`
-    """
+
     name = 'offerresourcecontract'
     model = OfferResourceContract
     serializer_class = 'commercia.offers.serializers.OfferResourceContractSerializer'
@@ -25,9 +21,7 @@ class OfferResourceContractDocumentCollection(DRFDocumentCollection):
 
 
 class OfferAspectDocumentCollection(DRFDocumentCollection):
-    """
-    A denormalized collection of `Offer Aspects`
-    """
+
     name = 'offeraspect'
     model = OfferAspect
     serializer_class = 'commercia.offers.serializers.OfferAspectSerializer'
