@@ -14,7 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         i = 0
-        while i < 20:
+        while i < 5:
             offer_instance = factories.OfferFactory()
             print "OfferInstance: %s :: title: %s" % (
                 offer_instance,
@@ -29,6 +29,12 @@ class Command(BaseCommand):
             
             orc_instance = factories.OfferResourceContractFactory(offer=offer)
             print "Added: %s" % orc_instance
+
+            onfo_instance = factories.OfferNForOneFactory(
+                offer=offer)
+            print "OfferNForOneFactory: %s :: title: %s" % (
+                onfo_instance,
+                onfo_instance.title)
 
             # trigger serialisation 
             offer.save()
