@@ -21,18 +21,12 @@ class OfferResourceContractSerializer(CQRSSerializer):
 
 
 class OfferAspectSerializer(CQRSPolymorphicSerializer):
-    '''
-    Serializer for Polymorphic Model OfferAspect.
-    '''
 
     class Meta:
         model = OfferAspect
 
 
 class OfferSerializer(CQRSSerializer):
-    '''
-    Serializer for the `SubscriptionContract` model
-    '''
 
     resource_contracts = OfferResourceContractSerializer(many=True)
     offer_aspects = OfferAspectSerializer(many=True)
@@ -46,5 +40,3 @@ class OfferSerializer(CQRSSerializer):
             'offer_aspects',
             'resource_contracts',
         )
-
-
