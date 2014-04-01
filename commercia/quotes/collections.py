@@ -1,7 +1,7 @@
-from .models import Quote
-
 from cqrs.mongo import mongodb
 from cqrs.collections import DRFDocumentCollection
+
+from .models import Quote, QuoteItem
 
 
 class QuoteDocumentCollection(DRFDocumentCollection):

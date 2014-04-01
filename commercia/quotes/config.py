@@ -1,6 +1,7 @@
 from django.apps import AppConfig
 from django.utils.importlib import import_module
 
+
 class QuotesConfig(AppConfig):
     name = 'commercia.quotes'
     verbose_name = "Quotes"
