@@ -8,6 +8,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for i in range(20):
-            quote_item_instance = factories.QuoteItemFactory
+            quote_item_instance = factories.QuoteItemFactory()
 
             print "QuoteItem: {}".format(quote_item_instance.pk)
