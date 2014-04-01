@@ -48,7 +48,7 @@ class Quote(CQRSModel, CreatedMixin, ModifiedMixin):
         '''
         return 0
 
-         
+
 
 
 class QuoteItem(CQRSModel):
@@ -63,6 +63,8 @@ class QuoteItem(CQRSModel):
 
     offer = models.ForeignKey(
         'offers.Offer')
+
+    quantity = models.PositiveIntegerField(default=1)
 
     @property
     def resource_contracts(self):
