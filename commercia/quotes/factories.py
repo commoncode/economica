@@ -12,7 +12,7 @@ class AgentFactory(factory.DjangoModelFactory):
     FACTORY_FOR = 'rea.Agent'
 
     title = factory.LazyAttribute(
-        lambda o: lorem_ipsum.words(2, common=False).title())    
+        lambda o: lorem_ipsum.words(2, common=False).title())
 
 
 class PlatformFactory(factory.django.DjangoModelFactory):
@@ -33,4 +33,5 @@ class QuoteFactory(factory.django.DjangoModelFactory):
 class QuoteItemFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'quotes.QuoteItem'
 
+    quote = factory.SubFactory(QuoteFactory)
     offer = factory.SubFactory('commercia.offers.factories.OfferFactory')
