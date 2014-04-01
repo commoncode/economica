@@ -1,5 +1,6 @@
 import datetime
 import factory
+import random
 
 from django.contrib.webdesign import lorem_ipsum
 
@@ -29,7 +30,7 @@ class ProductFactory(factory.django.DjangoModelFactory):
             for variant in extracted:
                 self.variants.add(variant)
 
-# 
+#
 # Product Factories
 #
 
@@ -57,6 +58,10 @@ class GarmentFactory(ProductFactory):
         lambda o: garments.words(3, common=False).title())
 
 
+class SessionFactory(ProductFactory):
+    FACTORY_FOR = 'products.Session'
+
+
 class SoftwareFactory(ProductFactory):
     FACTORY_FOR = 'products.Software'
 
@@ -81,3 +86,52 @@ class VariantFactory(factory.django.DjangoModelFactory):
 
     product = factory.SubFactory(ProductFactory)
 
+
+class VariantAspectFactory(factory.django.DjangoModelFactory):
+    FACTORY_FOR = 'products.VariantAspect'
+
+    variant = factory.SubFactory(VariantFactory)
+
+
+class AspectQualityFactory(factory.django.DjangoModelFactory):
+    FACTORY_FOR = 'products.AspectQuality'
+
+    title = factory.LazyAttribute(
+        lambda o: vehicles.words(3, common=False).title())
+
+
+# @@@ TODO move these factories to the qualites app
+def random_hex():
+    return '#%02X%02X%02X' % (
+        random.randint(0,255),
+        random.randint(0,255),
+        random.randint(0,255))
+
+
+class Color(AspectQualityFactory):
+    FACTORY_FOR = 'products.Color'
+
+    # @@@ TODO overwrite title with a color faker tile
+
+    hex = factory.LazyAttribute(
+        lambda o: random_hex())
+
+
+class Size(AspectQualityFactory):
+    FACTORY_FOR = 'products.Size'
+
+    # @@@ TODO make these dynamic fakers
+    dimension = 'Foot'
+    measure = '12'
+
+
+class VariantColorAspectFactory(VariantAspectFactory):
+    FACTORY_FOR = 'products.VariantColorAspect'
+
+    color = factory.SubFactory(Color)
+
+
+class VariantSizeAspectFactory(VariantAspectFactory):
+    FACTORY_FOR = 'products.VariantSizeAspect'
+
+    size = factory.SubFactory(Size)
