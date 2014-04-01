@@ -34,12 +34,12 @@ class Product(Resource):
         blank=True,
         max_length=512)
 
-# 
+#
 # Products
-# 
+#
 
 class Book(Product):
-    
+
     isbn = models.CharField(
         blank=True,
         max_length=512)
@@ -54,6 +54,10 @@ class Food(Product):
 
 
 class Garment(Product):
+    pass
+
+
+class Session(Product):
     pass
 
 
@@ -77,7 +81,7 @@ class Variant(CQRSModel):
 
     Products define at least one Variant.
     '''
-    
+
     product = models.ForeignKey(
         'Product',
         related_name='variants')
@@ -86,35 +90,38 @@ class Variant(CQRSModel):
 # Variant Aspects
 
 class VariantAspect(CQRSPolymorphicModel):
-    
-    variant = models.ForeignKey('Variant')
+
+    variant = models.ForeignKey(
+        'Variant',
+        related_name='aspects')
 
 
 class VariantSizeAspect(VariantAspect):
-    
+
     size = models.ForeignKey('Size')
 
 
 class VariantShadeAspect(VariantAspect):
-    
+
     shade = models.ForeignKey('Color')
 
 
 class VariantColorAspect(VariantAspect):
-    
+
     color = models.ForeignKey('Color')
 
 
-# 
-# Variant Aspect Qualities
-# 
+#
+# Aspect Qualities
+#
 
-class VariantAspectQuality(CQRSPolymorphicModel, SlugMixin, TitleMixin):
+# @@@ push these out to a separate app.
+class AspectQuality(CQRSPolymorphicModel, SlugMixin, TitleMixin):
     pass
 
 
-class Color(VariantAspectQuality):
-    
+class Color(AspectQuality):
+
     hex = models.CharField(
         max_length='6')
 
@@ -127,31 +134,40 @@ class Color(VariantAspectQuality):
     # def hsl(self):
         # return h, s, l
 
+    # def name
+        # determine the name from some kinda color chart
 
-class Size(VariantAspectQuality):
-    
-    size = models.CharField(
-        max_length=128)
 
+class Size(AspectQuality):
+
+    # title
+    # short_title
+    # slug
+
+    dimension = models.CharField(
+        max_length=512)
     measure = models.CharField(
         max_length=128)
 
 
-class Property(VariantAspectQuality):
-    '''
-    Cover: hard or soft
-    '''
-    pass
+class Property(AspectQuality):
+
+    # title
+    # short_title
+    # slug
+
+    value = models.CharField(
+        max_length=256)
 
 
-# 
+#
 # Variant Templates
-# 
+#
 
 class VariantTemplate(CQRSModel):
     '''
     Variant Templates are used to define re-usable
-    template patterns for Variants, VariantAspects & 
+    template patterns for Variants, VariantAspects &
     Variant Aspect Qualities.
 
     '''
@@ -178,14 +194,15 @@ class VariantTemplateAspectQuality(CQRSModel):
     Conjunct the Variant Template Aspect with a Quality.
     '''
     variant_template_aspect = models.ForeignKey('VariantTemplateAspect')
+    aspect_quality = models.ForeignKey('AspectQuality')
 
 
-# 
+#
 # Categories
-# 
+#
 
 class Category(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
-    
+
     parent = models.ForeignKey('self')
 
 
@@ -200,12 +217,12 @@ class Collection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
     pass
 
 
-# 
+#
 # Collections
-# 
+#
 
 
-# TODO Create an abstract pattern to express the re-usable Aspect / 
+# TODO Create an abstract pattern to express the re-usable Aspect /
 # AspectInstance / AspectRule pattern
 class SmartCollection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
     '''
@@ -226,5 +243,5 @@ class SmartCollectionAspectRule(CQRSModel):
 
 
 class SmartCollectionAspect(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
-    
+
     rules = models.ForeignKey('SmartCollectionAspectRule')

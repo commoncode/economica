@@ -9,9 +9,9 @@ from ... import models
 PRODUCT_FACTORIES = (
     factories.BookFactory,
     factories.CosmeticFactory,
-    factories.FoodFactory, 
+    factories.FoodFactory,
     factories.GarmentFactory,
-    factories.SoftwareFactory, 
+    factories.SoftwareFactory,
     factories.VehicleFactory,
 )
 
@@ -21,6 +21,8 @@ class Command(BaseCommand):
     help = 'Create a sample of Products'
 
     def handle(self, *args, **options):
+
+        factories.Color()
 
         i = 0
         while i in range(5):
@@ -35,11 +37,26 @@ class Command(BaseCommand):
                 product_instance.__class__,
                 product_instance.title)
 
-            variant_instance = factories.VariantFactory(product=product_instance)
+            variant_instance = factories.VariantFactory(product=product_instance.product)
             print "Added Variant %s to product %s" % (
                 variant_instance,
                 product_instance)
 
-    
+            variant_color_aspect_instance = factories.VariantColorAspectFactory(
+                variant = variant_instance)
+
+            print "Added Variant Color Aspect %s to variant %s" % (
+                variant_color_aspect_instance.color.hex,
+                variant_instance)
+
+            variant_size_aspect_instance = factories.VariantSizeAspectFactory(
+                variant = variant_instance)
+
+            print "Added Variant Size Aspect %s to variant %s" % (
+                variant_size_aspect_instance.size.dimension,
+                variant_instance)
+
+            product_instance.product.save()
+
 
             i+=1
