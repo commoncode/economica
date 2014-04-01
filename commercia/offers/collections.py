@@ -1,6 +1,7 @@
 from .models import *
 
-from cqrs.mongo import mongodb, DRFDocumentCollection
+from cqrs.mongo import mongodb
+from cqrs.collections import DRFDocumentCollection
 
 
 class OfferDocumentCollection(DRFDocumentCollection):
