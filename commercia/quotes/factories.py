@@ -1,4 +1,7 @@
+import factory
+
 from faker import Factory
+
 
 fake = Factory.create()
 
@@ -6,13 +9,9 @@ fake = Factory.create()
 class QuoteFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'quotes.Quote'
 
-    #platform
-    #recieving_agent
-    #providing_agent
-
-    @factory.post_generation
-    def quote_items(self, create, extracted, **kwargs):
-        pass
+    platform_id = 1
+    recieving_agent_id = 1
+    providing_agent_id = 1
 
 
 class QuoteItemFactory(factory.django.DjangoModelFactory):
