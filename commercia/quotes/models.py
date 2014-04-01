@@ -43,6 +43,7 @@ class Quote(CreatedMixin, ModifiedMixin):
         Recurse through the QuoteItems and Offers to tally
         the cost from Offer.cost
         '''
+        return 0
 
          
 

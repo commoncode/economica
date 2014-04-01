@@ -1,6 +1,5 @@
 from faker import Factory
 
-
 fake = Factory.create()
 
 
@@ -19,4 +18,4 @@ class QuoteFactory(factory.django.DjangoModelFactory):
 class QuoteItemFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'quotes.QuoteItem'
 
-    #offer
+    offer = factory.SubFactory('commercia.offers.factories.OfferFactory')
