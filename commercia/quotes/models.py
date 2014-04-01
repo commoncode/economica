@@ -48,8 +48,6 @@ class Quote(CQRSModel, CreatedMixin, ModifiedMixin):
         '''
         return 0
 
-         
-
 
 class QuoteItem(CQRSModel):
     '''

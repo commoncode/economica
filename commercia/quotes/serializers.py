@@ -18,5 +18,3 @@ class QuoteSerializer(CQRSSerializer):
 
     class Meta:
         model = Quote
-
-
