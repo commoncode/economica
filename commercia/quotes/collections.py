@@ -5,7 +5,6 @@ from cqrs.collections import DRFDocumentCollection
 
 
 class QuoteDocumentCollection(DRFDocumentCollection):
-
     name = 'quote'
     model = Quote
     serializer_class = 'commercia.quotes.serializers.QuoteSerializer'
