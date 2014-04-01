@@ -12,4 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        models.OfferAspect.objects.all().delete()
+    	for offer in models.Offer.objects.all():
+
+        	models.OfferAspect.objects.filter(offer=offer).delete()
+        	offer.save() # @@@ For now, help the Collections re-serialize
