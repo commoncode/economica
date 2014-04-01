@@ -6,7 +6,7 @@ from commercia.offers.serializers import OfferSerializer
 
 class QuoteItemSerializer(CQRSSerializer):
 
-	offer = OfferSerializer()    
+    offer = OfferSerializer()    
 
     class Meta:
         model = QuoteItem

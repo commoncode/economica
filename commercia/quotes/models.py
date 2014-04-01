@@ -1,9 +1,11 @@
 from django.db import models
 
 from entropy.base import CreatedMixin, ModifiedMixin
+from cqrs.noconflict import classmaker
+from cqrs.models import CQRSModel
 
 
-class Quote(CreatedMixin, ModifiedMixin):
+class Quote(CQRSModel, CreatedMixin, ModifiedMixin):
     '''
     The Quote model is symmetrical to the common Cart model in the majority
     of Shopping Cart models.  We're employing the Quote nomenclature to
@@ -20,6 +22,7 @@ class Quote(CreatedMixin, ModifiedMixin):
     instantiated Contract Offer or Related Contract Offer...
 
     '''
+    __metaclass__ = classmaker()
 
     # created_at
     # created_by
@@ -48,13 +51,18 @@ class Quote(CreatedMixin, ModifiedMixin):
          
 
 
-class QuoteItem(models.Model):
+class QuoteItem(CQRSModel):
     '''
     Quote (line) Item
 
     '''
 
-    offer = models.ForeignKey('offers.Offer')  # the primary offer
+    quote = models.ForeignKey(
+        Quote,
+        related_name='items')
+
+    offer = models.ForeignKey(
+        'offers.Offer')
 
     @property
     def resource_contracts(self):

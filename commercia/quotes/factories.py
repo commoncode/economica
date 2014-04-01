@@ -1,17 +1,33 @@
 import factory
 
-from faker import Factory
+from django.contrib.webdesign import lorem_ipsum
 
+from faker import Factory
+from fakers import lipservice
 
 fake = Factory.create()
+
+
+class AgentFactory(factory.DjangoModelFactory):
+    FACTORY_FOR = 'rea.Agent'
+
+    title = factory.LazyAttribute(
+        lambda o: lorem_ipsum.words(2, common=False).title())    
+
+
+class PlatformFactory(factory.django.DjangoModelFactory):
+    FACTORY_FOR = 'platforms.Platform'
+
+    title = factory.LazyAttribute(
+        lambda o: lorem_ipsum.words(1, common=False).title())
 
 
 class QuoteFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'quotes.Quote'
 
-    platform_id = 1
-    recieving_agent_id = 1
-    providing_agent_id = 1
+    platform = factory.SubFactory(PlatformFactory)
+    recieving_agent = factory.SubFactory(AgentFactory)
+    providing_agent = factory.SubFactory(AgentFactory)
 
 
 class QuoteItemFactory(factory.django.DjangoModelFactory):
