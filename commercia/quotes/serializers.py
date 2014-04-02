@@ -9,6 +9,12 @@ class QuoteItemSerializer(CQRSSerializer):
 
     class Meta:
         model = QuoteItem
+        fields = (
+            'id',
+            'quote',
+            'offer',
+            'quantity'
+        )
 
 
 class QuoteSerializer(CQRSSerializer):
@@ -16,3 +22,10 @@ class QuoteSerializer(CQRSSerializer):
 
     class Meta:
         model = Quote
+        fields = (
+          'id',
+          'items',
+          'platform',
+          'providing_agent',
+          'recieving_agent'
+        )

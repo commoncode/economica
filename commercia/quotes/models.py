@@ -62,6 +62,8 @@ class QuoteItem(CQRSModel):
     offer = models.ForeignKey(
         'offers.Offer')
 
+    quantity = models.PositiveIntegerField(default=1)
+
     @property
     def resource_contracts(self):
         return self.offer.resource_contracts
