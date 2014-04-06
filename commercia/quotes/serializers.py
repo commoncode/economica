@@ -23,9 +23,10 @@ class QuoteSerializer(CQRSSerializer):
     class Meta:
         model = Quote
         fields = (
-          'id',
-          'items',
-          'platform',
-          'providing_agent',
-          'recieving_agent'
+            'id',
+            'items',
+            'platform',
+            'providing_agent',
+            'recieving_agent',
+            'total'
         )
