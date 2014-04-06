@@ -13,7 +13,8 @@ class QuoteItemSerializer(CQRSSerializer):
             'id',
             'quote',
             'offer',
-            'quantity'
+            'quantity',
+            'total'
         )
 
 
@@ -28,5 +29,7 @@ class QuoteSerializer(CQRSSerializer):
             'platform',
             'providing_agent',
             'recieving_agent',
+            'subtotal',
+            'shipping',
             'total'
         )

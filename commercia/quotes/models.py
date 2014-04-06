@@ -36,21 +36,29 @@ class Quote(CQRSModel, CreatedMixin, ModifiedMixin):
         related_name='%(app_label)s_%(class)s_receiving_agents')
     providing_agent = models.ForeignKey('rea.Agent',
         related_name='%(app_label)s_%(class)s_providing_agents')
-
     subtotal = models.FloatField(default=0)
     shipping = models.FloatField(default=0)
     total = models.FloatField(default=0)
 
     def save(self, *args, **kwargs):
-        subtotal = 0
-
-        # Change this for a Sum() maybe ?
-        for item in self.items.all():
-            subtotal += item.total
-
-        self.subtotal = subtotal
+        self.calculate_subtotal()
+        self.calculate_shipping()
+        self.calculate_total()
 
         super(Quote, self).save(*args, **kwargs)
+
+    def calculate_subtotal(self):
+        self.subtotal = self.items.aggregate(
+            models.Sum('total')
+        )['total__sum'] or 0
+
+    def calculate_shipping(self):
+        # How are we gonna calculate shipping?
+        self.shipping = 15
+
+    def calculate_total(self):
+        # On a method for VIP changes maybe?
+        self.total = self.subtotal + self.shipping
 
 
 class QuoteItem(CQRSModel):
@@ -61,6 +69,7 @@ class QuoteItem(CQRSModel):
     quote = models.ForeignKey(Quote, related_name='items')
     offer = models.ForeignKey('offers.Offer')
     quantity = models.PositiveIntegerField(default=1)
+    total = models.FloatField(default=0)
 
     class Meta:
         unique_together = ('quote', 'offer')
@@ -69,8 +78,7 @@ class QuoteItem(CQRSModel):
     def resource_contracts(self):
         return self.offer.resource_contracts
 
-    # Must be a field to serialize
-    @cached_property
-    def total(self):
-        # self.offer.offer_aspects.all() - How to get price?
-        return self.quantity * 15
+    def save(self, *args, **kwargs):
+        # self.offer.offer_aspects.all() - How to get price? TODO
+        self.total = self.quantity * 15
+        super(QuoteItem, self).save(*args, **kwargs)
