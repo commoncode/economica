@@ -36,34 +36,26 @@ class Quote(CQRSModel, CreatedMixin, ModifiedMixin):
         related_name='%(app_label)s_%(class)s_receiving_agents')
     providing_agent = models.ForeignKey('rea.Agent',
         related_name='%(app_label)s_%(class)s_providing_agents')
-    subtotal = models.FloatField(default=0)
-    shipping = models.FloatField(default=0)
-    total = models.FloatField(default=0)
 
-    def save(self, *args, **kwargs):
-        self.calculate_subtotal()
-        self.calculate_shipping()
-        self.calculate_total()
-
-        super(Quote, self).save(*args, **kwargs)
-
+    @cached_property
     def calculate_subtotal(self):
-        self.subtotal = self.items.aggregate(
-            models.Sum('total')
-        )['total__sum'] or 0
+        return self.items.aggregate(models.Sum('total'))['total__sum'] or 0
 
+    @cached_property
     def calculate_shipping(self):
         # How are we gonna calculate shipping?
-        self.shipping = 15
+        return 15
 
+    @cached_property
     def calculate_total(self):
         # On a method for VIP changes maybe?
-        self.total = self.subtotal + self.shipping
+        return self.calculate_subtotal + self.calculate_shipping
 
 
 class QuoteItem(CQRSModel):
     '''
     Quote (line) Item
+
     '''
 
     quote = models.ForeignKey(Quote, related_name='items')
@@ -74,11 +66,15 @@ class QuoteItem(CQRSModel):
     class Meta:
         unique_together = ('quote', 'offer')
 
+    def save(self, *args, **kwargs):
+        # self.offer.offer_aspects.all() - How to get price? TODO
+        self.total = self.quantity * self.get_offer_price
+        super(QuoteItem, self).save(*args, **kwargs)
+
     @cached_property
     def resource_contracts(self):
         return self.offer.resource_contracts
 
-    def save(self, *args, **kwargs):
-        # self.offer.offer_aspects.all() - How to get price? TODO
-        self.total = self.quantity * 15
-        super(QuoteItem, self).save(*args, **kwargs)
+    @cached_property
+    def get_offer_price(self):
+        return 15
