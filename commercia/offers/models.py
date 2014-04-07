@@ -132,9 +132,9 @@ class OfferAspect(CQRSPolymorphicModel, TextMixin, EnabledMixin, OrderingMixin, 
         related_name='offer_aspects'
     )
 
-    chain_evaluation = models.BooleanField()  # evaluate in combination with previous others / evaluate separately
-    stop_evaluating = models.BooleanField()  # stop evaluating all other aspects beyond this one.
-    override_evaluation = models.BooleanField()  # override all previous offer aspect chains
+    chain_evaluation = models.BooleanField(default=None)  # evaluate in combination with previous others / evaluate separately
+    stop_evaluating = models.BooleanField(default=None)  # stop evaluating all other aspects beyond this one.
+    override_evaluation = models.BooleanField(default=None)  # override all previous offer aspect chains
 
 
 class OfferPrice(OfferAspect):
@@ -227,7 +227,7 @@ class OfferFreeShipping(OfferAspect):
             self.contract
         )
     '''
-    offer_free_shipping = models.BooleanField()
+    offer_free_shipping = models.BooleanField(default=None)
 
 
 class OfferNForOne(OfferAspect):
