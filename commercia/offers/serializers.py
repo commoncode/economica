@@ -3,8 +3,16 @@ from rest_framework import serializers
 from cqrs.serializers import CQRSSerializer, CQRSPolymorphicSerializer
 from rea_serializers.serializers import ResourceSerializer
 
-from commercia.products.serializers import CategorySerializer
+from commercia.products.models import Category
 from .models import *
+
+
+class CategoryArraySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+
+    def to_native(self, obj):
+        return obj
 
 
 class OfferResourceContractSerializer(CQRSSerializer):
@@ -28,7 +36,7 @@ class OfferAspectSerializer(CQRSPolymorphicSerializer):
 
 
 class OfferSerializer(CQRSSerializer):
-    categories = CategorySerializer(source='categories', many=True)
+    categories = CategoryArraySerializer(source='categories')
     resource_contracts = OfferResourceContractSerializer(many=True)
     offer_aspects = OfferAspectSerializer(many=True)
 

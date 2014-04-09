@@ -68,8 +68,8 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
         categories = []
 
         for contract in self.resource_contracts.all():
-            for category in contract.resource.categories.all():
-                categories.append(category)
+            categories.extend(contract.resource.categories.all().values_list(
+                'pk', flat=True))
 
         return categories
 
