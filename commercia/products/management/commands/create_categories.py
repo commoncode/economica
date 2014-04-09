@@ -12,7 +12,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         products = Product.objects.all()
 
-        for i in range(randint(2, 5)):
+        for i in range(randint(5, 10)):
             category = CategoryFactory()
 
             for j in range(randint(2, 5)):
