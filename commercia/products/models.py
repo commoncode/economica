@@ -30,6 +30,7 @@ class Product(Resource):
 
     '''
 
+    categories = models.ManyToManyField('Category', related_name='products')
     sku = models.CharField(
         blank=True,
         max_length=512)
@@ -202,12 +203,10 @@ class VariantTemplateAspectQuality(CQRSModel):
 #
 
 class Category(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
-
-    parent = models.ForeignKey('self')
-
+    parent = models.ForeignKey('self', blank=True, null=True)
 
     def children(self):
-        return Category.objects.filter(parent__id=self.id)
+        return self.objects.filter(parent__id=self.id)
 
 
 class Collection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):

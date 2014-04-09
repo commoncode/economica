@@ -24,8 +24,7 @@ class Command(BaseCommand):
 
         factories.Color()
 
-        i = 0
-        while i in range(5):
+        for i in range(5):
 
             product_factory = PRODUCT_FACTORIES[
                 random.randrange(0, len(PRODUCT_FACTORIES))
@@ -57,6 +56,3 @@ class Command(BaseCommand):
                 variant_instance)
 
             product_instance.product.save()
-
-
-            i+=1

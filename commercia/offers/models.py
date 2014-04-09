@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.functional import cached_property
 
 from cqrs.noconflict import classmaker
 from cqrs.models import CQRSPolymorphicModel, CQRSModel
@@ -62,6 +63,16 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
 
     platforms = models.ManyToManyField('platforms.Platform')
 
+    @cached_property
+    def categories(self):
+        categories = []
+
+        for contract in self.resource_contracts.all():
+            for category in contract.resource.categories.all():
+                categories.append(category)
+
+        return categories
+
 
 class OfferResourceContract(CQRSModel):
     '''
@@ -90,7 +101,7 @@ class OfferResourceContract(CQRSModel):
     def __unicode__(self):
         return '%s of %s under %s' % (
             self.quantity,
-            self.resource, 
+            self.resource,
             self.contract
         )
 
@@ -204,7 +215,7 @@ class OfferFreeGift(OfferAspect):
     def __unicode__(self):
         return '%s of %s under %s' % (
             self.quantity,
-            self.resource, 
+            self.resource,
             self.contract
         )
     '''
@@ -223,7 +234,7 @@ class OfferFreeShipping(OfferAspect):
     def __unicode__(self):
         return '%s of %s under %s' % (
             self.quantity,
-            self.resource, 
+            self.resource,
             self.contract
         )
     '''
@@ -247,13 +258,13 @@ class OfferNForOne(OfferAspect):
 
 class OfferToAgent(OfferAspect):
     '''
-    Theoretically offer a unique set of Agents an Offer Aspect based 
+    Theoretically offer a unique set of Agents an Offer Aspect based
     on some kind of activity.
 
-    For example, if the Agent has had this Offer or a Related Offer 
+    For example, if the Agent has had this Offer or a Related Offer
     in their Quote/Cart before then perhaps offer them a better deal?
 
-    Note: these are best created with an algorithm.  Rule-based 
+    Note: these are best created with an algorithm.  Rule-based
     Offer Aspects will be better applicable.
 
     Combine this with other Offer Aspects such as:
@@ -261,7 +272,7 @@ class OfferToAgent(OfferAspect):
         OfferDiscount
         OfferValidUntil
 
-    To give limited time offers based on 
+    To give limited time offers based on
 
     '''
 
@@ -282,7 +293,7 @@ class OfferCoupon(OfferAspect):
     '''
     # XXX Coupons have rules. Add them to determine validity.
     coupon = models.ForeignKey('coupons.Coupon') # XXX relate to a Contract for now.
-    
+
 
 class OfferOnQuote(OfferAspect):
     '''

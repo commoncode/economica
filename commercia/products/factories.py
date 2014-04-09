@@ -3,6 +3,7 @@ import factory
 import random
 
 from django.contrib.webdesign import lorem_ipsum
+from django.template.defaultfilters import slugify
 
 from fakers import lipservice, cosmetics, garments, vehicles
 
@@ -135,3 +136,15 @@ class VariantSizeAspectFactory(VariantAspectFactory):
     FACTORY_FOR = 'products.VariantSizeAspect'
 
     size = factory.SubFactory(Size)
+
+
+#
+# Categories
+#
+class CategoryFactory(factory.django.DjangoModelFactory):
+    FACTORY_FOR = 'products.Category'
+
+    title = factory.LazyAttribute(
+        lambda o: lorem_ipsum.words(3, common=False).title())
+    slug = factory.LazyAttribute(
+        lambda o: slugify(lorem_ipsum.words(5, common=False)))

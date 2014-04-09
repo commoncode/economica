@@ -12,21 +12,19 @@ class Command(BaseCommand):
     help = 'Create a sample of Offers'
 
     def handle(self, *args, **options):
+        offers = []
 
-        i = 0
-        while i < 5:
+        for i in range(5):
             offer_instance = factories.OfferFactory()
+            offers.append(offer_instance)
+
             print "OfferInstance: %s :: title: %s" % (
                 offer_instance,
                 offer_instance.title)
 
-            i+=1
-# 
-        offers = models.Offer.objects.all()
-
         for offer in offers:
             print "Adding Resource Contract: %s " % (offer.title)
-            
+
             orc_instance = factories.OfferResourceContractFactory(offer=offer)
             print "Added: %s" % orc_instance
 
@@ -36,5 +34,4 @@ class Command(BaseCommand):
                 onfo_instance,
                 onfo_instance.title)
 
-            # trigger serialisation 
             offer.save()
