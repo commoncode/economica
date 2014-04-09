@@ -2,12 +2,12 @@ from cqrs.mongo import mongodb
 from cqrs.collections import DRFDocumentCollection
 
 from .models import Quote, QuoteItem
+from .serializers import QuoteSerializer
 
 
 class QuoteDocumentCollection(DRFDocumentCollection):
-    name = 'quote'
     model = Quote
-    serializer_class = 'commercia.quotes.serializers.QuoteSerializer'
+    serializer_class = QuoteSerializer
     name = 'economica__quotes'
 
 
