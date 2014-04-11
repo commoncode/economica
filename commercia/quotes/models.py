@@ -67,14 +67,9 @@ class QuoteItem(CQRSModel):
         unique_together = ('quote', 'offer')
 
     def save(self, *args, **kwargs):
-        # self.offer.offer_aspects.all() - How to get price? TODO
-        self.total = self.quantity * self.get_offer_price
+        self.total = self.quantity * self.offer.price
         super(QuoteItem, self).save(*args, **kwargs)
 
     @cached_property
     def resource_contracts(self):
         return self.offer.resource_contracts
-
-    @cached_property
-    def get_offer_price(self):
-        return 15

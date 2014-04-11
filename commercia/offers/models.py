@@ -73,6 +73,45 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
 
         return categories
 
+    @cached_property
+    def quantity(self):
+        quantity = 0
+
+        for aspect in self.offer_aspects.all():
+            if (isinstance(aspect, OfferNForOne)):
+                quantity = aspect.offer_quantity
+
+                # XXX Can offers have more than one quantity???
+                break
+
+        return quantity
+
+    @cached_property
+    def price(self):
+        price = 0
+
+        for aspect in self.offer_aspects.all():
+            if (isinstance(aspect, OfferPrice)):
+                price = aspect.offer_price
+
+                # XXX Can offers have more than one price???
+                break
+
+        return price
+
+    @cached_property
+    def discount(self):
+        discount = 0
+
+        for aspect in self.offer_aspects.all():
+            if (isinstance(aspect, OfferDiscount)):
+                discount = aspect.offer_discount
+
+                # XXX Can offers have more than one discount???
+                break
+
+        return discount
+
 
 class OfferResourceContract(CQRSModel):
     '''

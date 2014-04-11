@@ -29,24 +29,22 @@ class OfferResourceContractSerializer(CQRSSerializer):
         )
 
 
-class OfferAspectSerializer(CQRSPolymorphicSerializer):
-
-    class Meta:
-        model = OfferAspect
-
-
 class OfferSerializer(CQRSSerializer):
-    categories = CategoryArraySerializer(source='categories')
+    categories = CategoryArraySerializer(source='categories', read_only=True)
+    discount = serializers.IntegerField(source='discount', read_only=True)
+    price = serializers.FloatField(source='price', read_only=True)
+    quantity = serializers.IntegerField(source='quantity', read_only=True)
     resource_contracts = OfferResourceContractSerializer(many=True)
-    offer_aspects = OfferAspectSerializer(many=True)
 
     class Meta:
         model = Offer
         fields = (
             'id',
-            'title',
             'categories',
-            'short_title',
-            'offer_aspects',
+            'discount',
+            'price',
+            'quantity',
             'resource_contracts',
+            'short_title',
+            'title',
         )
