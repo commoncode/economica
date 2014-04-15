@@ -2,6 +2,8 @@ from random import choice, randint
 
 from django.core.management.base import BaseCommand
 
+from commercia.offers.models import Offer
+
 from ...factories import CategoryFactory
 from ...models import Product
 
@@ -24,3 +26,6 @@ class Command(BaseCommand):
                     product.title)
 
             print 'Category: {}'.format(category.title)
+
+        for offer in Offer.objects.all():
+            offer.save()
