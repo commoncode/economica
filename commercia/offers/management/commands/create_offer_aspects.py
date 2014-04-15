@@ -16,6 +16,12 @@ class Command(BaseCommand):
 
         for offer in offers:
 
+            op_instance = factories.OfferPriceFactory(
+                offer=offer)
+            print "OfferPriceFactory: %s :: title: %s" % (
+                op_instance,
+                op_instance.title)
+
             onfo_instance = factories.OfferNForOneFactory(
                 offer=offer)
             print "OfferNForOneFactory: %s :: title: %s" % (

@@ -38,8 +38,13 @@ class VariantSerlizer(CQRSSerializer):
         model = models.Variant
 
 
-class ProductSerializer(CQRSPolymorphicSerializer):
+class CategorySerializer(CQRSSerializer):
+    class Meta:
+        model = models.Category
 
+
+class ProductSerializer(CQRSPolymorphicSerializer):
+    categories = CategorySerializer(many=True)
     variants = VariantSerlizer(many=True)
 
     class Meta:
