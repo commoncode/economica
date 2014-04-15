@@ -1,10 +1,10 @@
 from .models import *
 
 from cqrs.mongo import mongodb
-from cqrs.collections import DRFDocumentCollection
+from cqrs.collections import DRFPolymorphicDocumentCollection
 
 
-class ProductDocumentCollection(DRFDocumentCollection):
+class ProductDocumentCollection(DRFPolymorphicDocumentCollection):
 
     name = 'product'
     model = Product
