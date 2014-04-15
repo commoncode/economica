@@ -20,6 +20,7 @@ setup( name='economica',
     dependency_links = [
         'http://github.com/commoncode/entropy/tarball/master#egg=django-entropy-0.0.3',
         'http://github.com/commoncode/rea/tarball/master#egg=rea-0.0.2',
+        'http://github.com/commoncode/rea-collections/tarball/master#egg=rea-collections-0.0.1',
     ],
     setup_requires = [
         'pip',
