@@ -12,7 +12,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for offer in models.Offer.objects.all():
-            for aspect in models.OfferAspect.objects.filter(offer=offer):
+            # Remove only discounts for now!
+            #for aspect in models.OfferAspect.objects.filter(offer=offer):
+
+            for aspect in models.OfferDiscount.objects.filter(offer=offer):
                 aspect.delete()
 
             offer.save() # @@@ For now, help the Collections re-serialize
