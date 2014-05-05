@@ -203,22 +203,23 @@ class VariantTemplateAspectQuality(CQRSModel):
 #
 
 class Category(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
-    parent = models.ForeignKey('self', blank=True, null=True)
-
-    def children(self):
-        return self.objects.filter(parent__id=self.id)
-
-
-class Collection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
-    '''
-    An arbitrary Collection of Offers according to Promotional themes.
-    '''
-    pass
+    collection = models.ForeignKey('Collection', blank=True, null=True,
+        related_name='categories')
+    parent = models.ForeignKey('self', blank=True, null=True,
+        related_name='children')
 
 
 #
 # Collections
 #
+
+class Collection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
+    '''
+    An arbitrary Collection of Offers according to Promotional themes.
+    '''
+
+    # XXXXX Collection is to Menu as Category is to MenuItem?
+    menu = models.OneToOneField('menus.Menu', blank=True, null=True)
 
 
 # TODO Create an abstract pattern to express the re-usable Aspect /

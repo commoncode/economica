@@ -7,6 +7,7 @@ from entropy.base import (
     TextMixin, EnabledMixin, OrderingMixin, StartEndMixin, TitleMixin
 )
 from entropy.fields import PriceField
+from commercia.products.models import Category
 
 
 class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
@@ -62,6 +63,17 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
     # enabled
 
     platforms = models.ManyToManyField('platforms.Platform')
+
+    @cached_property
+    def collections(self):
+        collections = []
+
+        for collection in Category.objects.select_related().filter(
+            pk__in=self.categories).values_list('collection__pk', flat=True):
+                if not collection in collections:
+                    collections.append(collection)
+
+        return collections
 
     @cached_property
     def categories(self):

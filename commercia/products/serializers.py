@@ -38,6 +38,11 @@ class VariantSerlizer(CQRSSerializer):
         model = models.Variant
 
 
+class CollectionSerializer(CQRSSerializer):
+    class Meta:
+        model = models.Collection
+
+
 class CategorySerializer(CQRSSerializer):
     class Meta:
         model = models.Category
@@ -49,3 +54,4 @@ class ProductSerializer(CQRSPolymorphicSerializer):
 
     class Meta:
         model = models.Product
+
