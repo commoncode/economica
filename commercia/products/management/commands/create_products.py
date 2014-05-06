@@ -1,6 +1,7 @@
-import random
+from random import choice, randint
 
 from django.conf import settings
+from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
 
 from ... import factories
@@ -16,43 +17,32 @@ PRODUCT_FACTORIES = (
 )
 
 class Command(BaseCommand):
-
-    # args = '<poll_id poll_id ...>'
     help = 'Create a sample of Products'
 
     def handle(self, *args, **options):
-
         factories.Color()
 
-        for i in range(5):
+        categories = models.Category.objects.all()
 
-            product_factory = PRODUCT_FACTORIES[
-                random.randrange(0, len(PRODUCT_FACTORIES))
-            ]
+        if not categories.exists():
+            call_command('create_categories')
 
-            product_instance = product_factory()
+        for i in range(randint(5, 15)):
+            product = choice(PRODUCT_FACTORIES)(category=choice(categories))
+            print 'Product: {} :: Title: {} :: Category: {}'.format(
+                product.__class__, product.title, product.category)
 
-            print "Product: %s :: title: %s" % (
-                product_instance.__class__,
-                product_instance.title)
+            variant = factories.VariantFactory(product=product)
+            print 'Added Variant {} to product {}'.format(variant, product)
 
-            variant_instance = factories.VariantFactory(product=product_instance.product)
-            print "Added Variant %s to product %s" % (
-                variant_instance,
-                product_instance)
+            variant_color_aspect = factories.VariantColorAspectFactory(
+                variant=variant)
+            print 'Added Variant Color Aspect {} to variant {}'.format(
+                variant_color_aspect.color.hex, variant)
 
-            variant_color_aspect_instance = factories.VariantColorAspectFactory(
-                variant = variant_instance)
+            variant_size_aspect = factories.VariantSizeAspectFactory(
+                variant=variant)
+            print 'Added Variant Size Aspect {} to variant {}'.format(
+                variant_size_aspect.size.dimension, variant)
 
-            print "Added Variant Color Aspect %s to variant %s" % (
-                variant_color_aspect_instance.color.hex,
-                variant_instance)
-
-            variant_size_aspect_instance = factories.VariantSizeAspectFactory(
-                variant = variant_instance)
-
-            print "Added Variant Size Aspect %s to variant %s" % (
-                variant_size_aspect_instance.size.dimension,
-                variant_instance)
-
-            product_instance.product.save()
+            product.save()

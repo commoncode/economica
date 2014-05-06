@@ -1,6 +1,6 @@
-from . import models
-
 from cqrs.serializers import CQRSPolymorphicSerializer, CQRSSerializer
+
+from . import models
 
 
 class AspectQualitySerializer(CQRSPolymorphicSerializer):
@@ -38,20 +38,8 @@ class VariantSerlizer(CQRSSerializer):
         model = models.Variant
 
 
-class CollectionSerializer(CQRSSerializer):
-    class Meta:
-        model = models.Collection
-
-
-class CategorySerializer(CQRSSerializer):
-    class Meta:
-        model = models.Category
-
-
 class ProductSerializer(CQRSPolymorphicSerializer):
-    categories = CategorySerializer(many=True)
     variants = VariantSerlizer(many=True)
 
     class Meta:
         model = models.Product
-

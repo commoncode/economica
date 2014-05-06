@@ -30,10 +30,10 @@ class Product(Resource):
 
     '''
 
-    categories = models.ManyToManyField('Category', related_name='products')
-    sku = models.CharField(
-        blank=True,
-        max_length=512)
+    category = models.ForeignKey('Category', null=True,
+        related_name='products')
+    sku = models.CharField(blank=True, max_length=512)
+
 
 #
 # Products
@@ -203,23 +203,10 @@ class VariantTemplateAspectQuality(CQRSModel):
 #
 
 class Category(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
-    collection = models.ForeignKey('Collection', blank=True, null=True,
-        related_name='categories')
-    parent = models.ForeignKey('self', blank=True, null=True,
-        related_name='children')
+    parent = models.ForeignKey('self', null=True, related_name='children')
 
-
-#
-# Collections
-#
-
-class Collection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
-    '''
-    An arbitrary Collection of Offers according to Promotional themes.
-    '''
-
-    # XXXXX Collection is to Menu as Category is to MenuItem?
-    menu = models.OneToOneField('menus.Menu', blank=True, null=True)
+    def __unicode__(self):
+        return self.title
 
 
 # TODO Create an abstract pattern to express the re-usable Aspect /

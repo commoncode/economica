@@ -1,40 +1,20 @@
-from random import choice, randint
+from random import randint
 
 from django.core.management.base import BaseCommand
 
-from commercia.offers.models import Offer
-
-from ...factories import CollectionFactory, CategoryFactory
-from ...models import Product
+from ...factories import CategoryFactory
 
 
 class Command(BaseCommand):
     help = 'Create Categories and add products'
 
     def handle(self, *args, **options):
-        products = Product.objects.all()
-
         for i in range(randint(6, 9)):
-            collection = CollectionFactory()
+            category = CategoryFactory()
 
             for j in range(randint(2, 5)):
-                category = CategoryFactory(collection=collection)
+                subcategory = CategoryFactory(parent=category)
 
-                for k in range(randint(1, 3)):
-                    product = choice(products)
-                    product.categories.add(category)
-                    product.save()
+                print 'Subcategory: {}'.format(subcategory)
 
-                    print 'Added category {} to product {}'.format(
-                        category.title, product.title)
-
-                category.save()
-
-                print 'Category: {}'.format(category.title)
-
-            collection.save()
-
-            print 'Collection: {}'.format(collection.title)
-
-        for offer in Offer.objects.all():
-            offer.save()
+            print 'Category: {}'.format(category)

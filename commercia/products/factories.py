@@ -139,18 +139,6 @@ class VariantSizeAspectFactory(VariantAspectFactory):
 
 
 #
-# Collections
-#
-class CollectionFactory(factory.django.DjangoModelFactory):
-    FACTORY_FOR = 'products.Collection'
-
-    title = factory.LazyAttribute(
-        lambda o: lorem_ipsum.words(3, common=False).title())
-    slug = factory.LazyAttribute(
-        lambda o: slugify(lorem_ipsum.words(5, common=False)))
-
-
-#
 # Categories
 #
 class CategoryFactory(factory.django.DjangoModelFactory):
@@ -160,4 +148,3 @@ class CategoryFactory(factory.django.DjangoModelFactory):
         lambda o: lorem_ipsum.words(3, common=False).title())
     slug = factory.LazyAttribute(
         lambda o: slugify(lorem_ipsum.words(5, common=False)))
-    collection = factory.SubFactory(CollectionFactory)

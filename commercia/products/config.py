@@ -7,4 +7,3 @@ class ProductsConfig(AppConfig):
 
     def ready(self):
         import_module('commercia.products.collections')
-        # import_module('commercia.products.signals')

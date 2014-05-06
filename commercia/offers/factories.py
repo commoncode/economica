@@ -2,6 +2,9 @@ import datetime
 import factory
 import random
 
+from django.contrib.webdesign import lorem_ipsum
+from django.template.defaultfilters import slugify
+
 from fakers import lipservice
 
 from faker import Factory
@@ -24,19 +27,19 @@ class OfferFactory(factory.django.DjangoModelFactory):
 
     @factory.post_generation
     def resource_contracts(self, create, extracted, **kwargs):
-    
+
         if not create:
             # Simple build, do nothing.
             return
 
-        OfferResourceContractFactory(offer=self) 
+        OfferResourceContractFactory(offer=self)
 
         if extracted:
             # A list of contracts were passed in, use them
             for resource_contract in extracted:
                 self.resource_contracts.add(resource_contract)
 
-    
+
 class OfferResourceContractFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'offers.OfferResourceContract'
 
@@ -105,5 +108,13 @@ class OfferToAgentsFactory(OfferAspectFactory):
     FACTORY_FOR = 'offers.OfferToAgent'
 
 
+#
+# Collections
+#
+class CollectionFactory(factory.django.DjangoModelFactory):
+    FACTORY_FOR = 'offers.Collection'
 
-
+    title = factory.LazyAttribute(
+        lambda o: lorem_ipsum.words(3, common=False).title())
+    slug = factory.LazyAttribute(
+        lambda o: slugify(lorem_ipsum.words(5, common=False)))
