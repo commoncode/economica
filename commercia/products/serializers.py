@@ -3,6 +3,11 @@ from cqrs.serializers import CQRSPolymorphicSerializer, CQRSSerializer
 from . import models
 
 
+class CategorySerializer(CQRSSerializer):
+    class Meta:
+        model = models.Category
+
+
 class AspectQualitySerializer(CQRSPolymorphicSerializer):
 
     class Meta:

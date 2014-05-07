@@ -18,7 +18,7 @@ class Command(BaseCommand):
         if not collections.exists():
             call_command('create_collections')
 
-        for i in range(randint(5, 10)):
+        for i in range(randint(15, 20)):
             offer = factories.OfferFactory()
 
             for j in range(2):

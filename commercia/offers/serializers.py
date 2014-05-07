@@ -15,9 +15,12 @@ class CategoryArraySerializer(serializers.ModelSerializer):
         return obj
 
 
-class CollectionSerializer(CQRSSerializer):
+class CategoryCollectionSerializer(CQRSSerializer):
     class Meta:
         model = models.Collection
+
+    def to_native(self, obj):
+        return obj
 
 
 class OfferResourceContractSerializer(CQRSSerializer):
@@ -35,7 +38,8 @@ class OfferResourceContractSerializer(CQRSSerializer):
 
 
 class OfferSerializer(CQRSSerializer):
-    collections = CollectionSerializer(many=True)
+    collections = CategoryCollectionSerializer(source='collections_ids',
+        read_only=True)
     categories = CategoryArraySerializer(source='categories', read_only=True)
     discount = serializers.IntegerField(source='discount', read_only=True)
     price = serializers.FloatField(source='price', read_only=True)

@@ -1,8 +1,15 @@
 from cqrs.mongo import mongodb
-from cqrs.collections import DRFPolymorphicDocumentCollection
+from cqrs.collections import (DRFDocumentCollection,
+    DRFPolymorphicDocumentCollection)
 
-from .models import Product
-from .serializers import ProductSerializer
+from .models import Category, Product
+from .serializers import CategorySerializer, ProductSerializer
+
+
+class CategoryDocumentCollection(DRFDocumentCollection):
+    model = Category
+    serializer_class = CategorySerializer
+    name = 'economica__categories'
 
 
 class ProductDocumentCollection(DRFPolymorphicDocumentCollection):
@@ -11,4 +18,5 @@ class ProductDocumentCollection(DRFPolymorphicDocumentCollection):
     name = 'economica__products'
 
 
+mongodb.register(CategoryDocumentCollection())
 mongodb.register(ProductDocumentCollection())

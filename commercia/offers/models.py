@@ -6,7 +6,6 @@ from cqrs.models import CQRSPolymorphicModel, CQRSModel
 from entropy.base import (EnabledMixin, OrderingMixin, SlugMixin, TitleMixin,
     StartEndMixin, TextMixin)
 from entropy.fields import PriceField
-from commercia.products.models import Category
 
 
 class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
@@ -68,13 +67,23 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
         return self.title
 
     @cached_property
+    def collections_ids(self):
+        collections = []
+
+        for pk in self.collections.values_list('pk', flat=True):
+            collections.append(pk)
+
+        return collections
+
+    @cached_property
     def categories(self):
         categories = []
 
         for category in self.resource_contracts.values_list(
-            'resource__product__category', flat=True):
+            'resource__product__category',
+            'resource__product__category__parent').distinct():
             if not category in categories:
-                categories.append(category)
+                categories.extend(category)
 
         return categories
 
