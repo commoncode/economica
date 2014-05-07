@@ -19,7 +19,11 @@ class Command(BaseCommand):
             call_command('create_collections')
 
         for i in range(randint(5, 10)):
-            offer = factories.OfferFactory(collection=choice(collections))
+            offer = factories.OfferFactory()
+
+            for j in range(2):
+                offer.collections.add(choice(collections))
+
             print 'Offer: {}'.format(offer)
 
             orc = factories.OfferResourceContractFactory(offer=offer)

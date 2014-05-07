@@ -30,8 +30,7 @@ class Product(Resource):
 
     '''
 
-    category = models.ForeignKey('Category', null=True,
-        related_name='products')
+    category = models.ForeignKey('Category', related_name='products')
     sku = models.CharField(blank=True, max_length=512)
 
 

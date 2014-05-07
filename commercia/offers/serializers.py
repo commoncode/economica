@@ -35,6 +35,7 @@ class OfferResourceContractSerializer(CQRSSerializer):
 
 
 class OfferSerializer(CQRSSerializer):
+    collections = CollectionSerializer(many=True)
     categories = CategoryArraySerializer(source='categories', read_only=True)
     discount = serializers.IntegerField(source='discount', read_only=True)
     price = serializers.FloatField(source='price', read_only=True)
@@ -45,7 +46,7 @@ class OfferSerializer(CQRSSerializer):
         model = models.Offer
         fields = (
             'id',
-            'collection',
+            'collections',
             'categories',
             'discount',
             'price',

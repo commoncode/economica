@@ -61,7 +61,7 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
     # end (optional)
     # enabled
 
-    collection = models.ForeignKey('Collection', related_name='offers')
+    collections = models.ManyToManyField('Collection', related_name='offers')
     platforms = models.ManyToManyField('platforms.Platform')
 
     def __unicode__(self):
@@ -72,7 +72,7 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
         categories = []
 
         for category in self.resource_contracts.values_list(
-            'resource__product__category__pk', flat=True):
+            'resource__product__category', flat=True):
             if not category in categories:
                 categories.append(category)
 
@@ -354,7 +354,6 @@ class Collection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
     '''
     An arbitrary Collection of Offers according to Promotional themes.
     '''
-    pass
 
     def __unicode__(self):
         return self.title
