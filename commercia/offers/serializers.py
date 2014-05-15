@@ -15,7 +15,7 @@ class CategoryArraySerializer(serializers.ModelSerializer):
         return obj
 
 
-class CategoryCollectionSerializer(CQRSSerializer):
+class CollectionArraySerializer(CQRSSerializer):
     class Meta:
         model = models.Collection
 
@@ -38,7 +38,7 @@ class OfferResourceContractSerializer(CQRSSerializer):
 
 
 class OfferSerializer(CQRSSerializer):
-    collections = CategoryCollectionSerializer(source='collections_ids',
+    collections = CollectionArraySerializer(source='collections_ids',
         read_only=True)
     categories = CategoryArraySerializer(source='categories', read_only=True)
     discount = serializers.IntegerField(source='discount', read_only=True)
