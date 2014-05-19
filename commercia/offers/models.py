@@ -68,12 +68,7 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
 
     @cached_property
     def collections_ids(self):
-        collections = []
-
-        for pk in self.collections.values_list('pk', flat=True):
-            collections.append(pk)
-
-        return collections
+        return self.collections.values_list('pk', flat=True)
 
     @cached_property
     def categories(self):
