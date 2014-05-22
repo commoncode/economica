@@ -21,13 +21,13 @@ class ProductFactory(factory.django.DjangoModelFactory):
         lambda o: lipservice.words(5, common=False).title())
 
     @factory.lazy_attribute
-    def category_id(self):
+    def category(self):
         categories = Category.objects.filter(parent__isnull=False)
 
         if not categories.exists():
             call_command('create_categories')
 
-        return random.choice(categories.values_list('pk', flat=True))
+        return random.choice(categories)
 
     @factory.post_generation
     def variants(self, create, extracted, **kwargs):
