@@ -49,3 +49,7 @@ class ProductSerializer(CQRSPolymorphicSerializer):
 
     class Meta:
         model = models.Product
+        fields = (
+            'title',
+            'short_title'
+        )
