@@ -11,8 +11,11 @@ class Command(BaseCommand):
     help = 'Remove all sample of Offers Aspects'
 
     def handle(self, *args, **options):
+        for offer in models.Offer.objects.all():
+            # Remove only discounts for now!
+            #for aspect in models.OfferAspect.objects.filter(offer=offer):
 
-    	for offer in models.Offer.objects.all():
+            for aspect in models.OfferDiscount.objects.filter(offer=offer):
+                aspect.delete()
 
-        	models.OfferAspect.objects.filter(offer=offer).delete()
-        	offer.save() # @@@ For now, help the Collections re-serialize
+            offer.save() # @@@ For now, help the Collections re-serialize

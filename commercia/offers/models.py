@@ -3,9 +3,8 @@ from django.utils.functional import cached_property
 
 from cqrs.noconflict import classmaker
 from cqrs.models import CQRSPolymorphicModel, CQRSModel
-from entropy.base import (
-    TextMixin, EnabledMixin, OrderingMixin, StartEndMixin, TitleMixin
-)
+from entropy.base import (EnabledMixin, OrderingMixin, SlugMixin, TitleMixin,
+    StartEndMixin, TextMixin)
 from entropy.fields import PriceField
 
 
@@ -61,15 +60,25 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
     # end (optional)
     # enabled
 
+    collections = models.ManyToManyField('Collection', related_name='offers')
     platforms = models.ManyToManyField('platforms.Platform')
+
+    def __unicode__(self):
+        return self.title
+
+    @cached_property
+    def collections_ids(self):
+        return self.collections.values_list('pk', flat=True)
 
     @cached_property
     def categories(self):
         categories = []
 
-        for contract in self.resource_contracts.all():
-            categories.extend(contract.resource.categories.all().values_list(
-                'pk', flat=True))
+        for category in self.resource_contracts.values_list(
+            'resource__product__category',
+            'resource__product__category__parent').distinct():
+            if not category in categories:
+                categories.extend(category)
 
         return categories
 
@@ -340,3 +349,15 @@ class OfferOnQuote(OfferAspect):
     Offer.  Such as OfferFreeGift.
     '''
     minimum = PriceField()
+
+
+#
+# Collections
+#
+class Collection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
+    '''
+    An arbitrary Collection of Offers according to Promotional themes.
+    '''
+
+    def __unicode__(self):
+        return self.title
