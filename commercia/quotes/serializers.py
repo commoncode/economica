@@ -11,13 +11,6 @@ class QuoteItemSerializer(CQRSSerializer):
 
     class Meta:
         model = QuoteItem
-        fields = (
-            'id',
-            'quote',
-            'offer',
-            'quantity',
-            'total'
-        )
 
 
 class QuoteSerializer(CQRSSerializer):
@@ -31,13 +24,4 @@ class QuoteSerializer(CQRSSerializer):
 
     class Meta:
         model = Quote
-        fields = (
-            'id',
-            'items',
-            'platform',
-            'providing_agent',
-            'recieving_agent',
-            'subtotal',
-            'shipping',
-            'total'
-        )
+        exclude = 'created_at', 'created_by', 'modified_at', 'modified_by'

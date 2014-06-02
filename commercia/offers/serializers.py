@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from cqrs.serializers import CQRSSerializer, CQRSPolymorphicSerializer
+from cqrs.serializers import CQRSSerializer
 from commercia.products.models import Category
 from rea_serializers.serializers import ResourceSerializer
 
@@ -24,22 +24,16 @@ class CollectionArraySerializer(CQRSSerializer):
 
 
 class OfferResourceContractSerializer(CQRSSerializer):
-
     resource = ResourceSerializer()
 
     class Meta:
         model = models.OfferResourceContract
-        fields = (
-            'id',
-            'contract',
-            'resource',
-            'quantity'
-        )
+        exclude = 'offer',
 
 
 class OfferSerializer(CQRSSerializer):
     collections = CollectionArraySerializer(source='collections_ids',
-        read_only=True)
+                                            read_only=True)
     categories = CategoryArraySerializer(source='categories', read_only=True)
     discount = serializers.IntegerField(source='discount', read_only=True)
     price = serializers.FloatField(source='price', read_only=True)
@@ -48,14 +42,4 @@ class OfferSerializer(CQRSSerializer):
 
     class Meta:
         model = models.Offer
-        fields = (
-            'id',
-            'collections',
-            'categories',
-            'discount',
-            'price',
-            'quantity',
-            'resource_contracts',
-            'short_title',
-            'title',
-        )
+        exclude = 'enabled', 'start', 'end'
