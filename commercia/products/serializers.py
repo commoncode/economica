@@ -1,5 +1,6 @@
 from cqrs.serializers import CQRSPolymorphicSerializer, CQRSSerializer
 
+from images.serializers import ImageInstanceSerializer
 from . import models
 
 
@@ -33,6 +34,7 @@ class VariantSerlizer(CQRSSerializer):
 
 
 class ProductSerializer(CQRSPolymorphicSerializer):
+    images = ImageInstanceSerializer(many=True)
     variants = VariantSerlizer(many=True)
 
     class Meta:

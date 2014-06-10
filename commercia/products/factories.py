@@ -153,6 +153,7 @@ class VariantSizeAspectFactory(VariantAspectFactory):
 #
 class CategoryFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'products.Category'
+    FACTORY_DJANGO_GET_OR_CREATE = ('title', )
 
     title = factory.LazyAttribute(
         lambda o: lorem_ipsum.words(random.randint(1, 2), common=False).title()
