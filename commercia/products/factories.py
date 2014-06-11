@@ -160,6 +160,6 @@ class CategoryFactory(factory.django.DjangoModelFactory):
     )
     slug = factory.LazyAttribute(
         lambda o: slugify(
-            lorem_ipsum.words(random.randint(1, 5), common=False)
+            lorem_ipsum.words(random.randint(3, 6), common=False)
         )
     )
