@@ -8,7 +8,7 @@ from entropy.base import (EnabledMixin, OrderingMixin, SlugMixin, TitleMixin,
 from entropy.fields import PriceField
 
 
-class Offer(CQRSModel, EnabledMixin, StartEndMixin, TitleMixin):
+class Offer(CQRSModel, EnabledMixin, StartEndMixin, SlugMixin, TitleMixin):
     '''
     An Offer is an instantiation of a Contract for a Resource as Products or
     Services upon a given Platform.
