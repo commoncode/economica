@@ -66,21 +66,6 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, SlugMixin, TitleMixin):
     def __unicode__(self):
         return self.title
 
-    @cached_property
-    def collections_ids(self):
-        return self.collections.values_list('pk', flat=True)
-
-    @cached_property
-    def categories(self):
-        categories = []
-
-        for category in self.resource_contracts.values_list(
-            'resource__product__category',
-            'resource__product__category__parent').distinct():
-            if not category in categories:
-                categories.extend(category)
-
-        return categories
 
     @cached_property
     def quantity(self):

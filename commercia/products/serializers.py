@@ -1,9 +1,12 @@
+from rest_framework import serializers
+
 from cqrs.serializers import CQRSPolymorphicSerializer, CQRSSerializer
 
 from . import models
 
 
 class CategorySerializer(CQRSSerializer):
+
     class Meta:
         model = models.Category
 
@@ -15,10 +18,6 @@ class AspectQualitySerializer(CQRSPolymorphicSerializer):
 
 
 class VariantAspectSerializer(CQRSPolymorphicSerializer):
-
-    # @@@ Only one of these will exist.
-    color = AspectQualitySerializer()
-    size = AspectQualitySerializer()
 
     class Meta:
         model = models.VariantAspect
@@ -33,7 +32,9 @@ class VariantSerlizer(CQRSSerializer):
 
 
 class ProductSerializer(CQRSPolymorphicSerializer):
+
     variants = VariantSerlizer(many=True)
+    category = CategorySerializer()
 
     class Meta:
         model = models.Product
