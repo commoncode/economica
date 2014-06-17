@@ -56,14 +56,3 @@ class OfferSerializer(CQRSSerializer):
 
     class Meta:
         model = models.Offer
-        fields = (
-            'collections',
-            'discount',
-            'id',
-            'offer_aspects',
-            'price',
-            'quantity',
-            'resource_contracts',
-            'short_title',
-            'title',
-        )
