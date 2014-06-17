@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from cqrs.serializers import CQRSPolymorphicSerializer, CQRSSerializer
 
+from images.serializers import ImageInstanceSerializer
 from . import models
 
 
@@ -25,7 +26,8 @@ class VariantAspectSerializer(CQRSPolymorphicSerializer):
 
 class VariantSerlizer(CQRSSerializer):
 
-    aspects = VariantAspectSerializer(many=True)
+    aspects = VariantAspectSerializer(
+        many=True)
 
     class Meta:
         model = models.Variant
@@ -33,8 +35,13 @@ class VariantSerlizer(CQRSSerializer):
 
 class ProductSerializer(CQRSPolymorphicSerializer):
 
-    variants = VariantSerlizer(many=True)
     category = CategorySerializer()
+
+    images = ImageInstanceSerializer(
+        many=True)
+
+    variants = VariantSerlizer(
+        many=True)
 
     class Meta:
         model = models.Product

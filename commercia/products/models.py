@@ -1,9 +1,11 @@
+from django.contrib.contenttypes.generic import GenericRelation
 from django.db import models
 
 from cqrs.models import CQRSModel, CQRSPolymorphicModel
 from entropy.base import (
     EnabledMixin, SlugMixin, TitleMixin
 )
+from images.models import ImageInstance
 
 from rea.models import Resource
 from rea.settings import REA_PROVIDING_AGENT_MODEL, REA_REPORTING_AGENT_ID
@@ -35,6 +37,7 @@ class Product(Resource):
         related_name='products')
 
     sku = models.CharField(blank=True, max_length=512)
+    images = GenericRelation(ImageInstance)
 
 
 #
