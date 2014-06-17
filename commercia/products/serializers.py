@@ -34,6 +34,7 @@ class VariantSerlizer(CQRSSerializer):
 
 
 class ProductSerializer(CQRSPolymorphicSerializer):
+    category = CategorySerializer()
     images = ImageInstanceSerializer(many=True)
     variants = VariantSerlizer(many=True)
 
