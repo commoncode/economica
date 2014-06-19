@@ -11,7 +11,6 @@ class ParentCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Category
-        exclude
 
 
 class CategorySerializer(CQRSSerializer):
