@@ -6,7 +6,17 @@ from images.serializers import ImageInstanceSerializer
 from . import models
 
 
+class ParentCategorySerializer(serializers.ModelSerializer):
+    '''Returns one level of parent category up...'''
+
+    class Meta:
+        model = models.Category
+        exclude
+
+
 class CategorySerializer(CQRSSerializer):
+
+    parent = ParentCategorySerializer()
 
     class Meta:
         model = models.Category
