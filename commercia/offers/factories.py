@@ -18,6 +18,7 @@ class OfferFactory(factory.django.DjangoModelFactory):
 
     title = factory.LazyAttribute(
         lambda o: lipservice.words(3, common=False).title())
+    slug = factory.LazyAttribute(lambda o: slugify(o.title))
 
     start = factory.LazyAttribute(
         lambda o: datetime.datetime.now())

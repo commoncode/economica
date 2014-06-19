@@ -1,10 +1,10 @@
-from django.contrib.contenttypes.generic import GenericRelation
 from django.db import models
 
 from cqrs.models import CQRSModel, CQRSPolymorphicModel
 from entropy.base import (
     EnabledMixin, SlugMixin, TitleMixin
 )
+from images.mixins import ImageMixin
 from images.models import ImageInstance
 
 from rea.models import Resource
@@ -20,7 +20,7 @@ EntityAspect for Custom Products.
 '''
 
 
-class Product(Resource):
+class Product(Resource, ImageMixin):
     '''
     Economica Product.
 
@@ -37,7 +37,6 @@ class Product(Resource):
         related_name='products')
 
     sku = models.CharField(blank=True, max_length=512)
-    images = GenericRelation(ImageInstance)
 
 
 #
