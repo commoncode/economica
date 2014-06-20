@@ -1,10 +1,8 @@
-import datetime
 import factory
 import random
 
 from django.contrib.webdesign import lorem_ipsum
 from django.core.management import call_command
-from django.template.defaultfilters import slugify
 
 from fakers import lipservice, cosmetics, garments, vehicles
 from faker import Factory
@@ -41,10 +39,10 @@ class ProductFactory(factory.django.DjangoModelFactory):
             for variant in extracted:
                 self.variants.add(variant)
 
+
 #
 # Product Factories
 #
-
 class BookFactory(ProductFactory):
     FACTORY_FOR = 'products.Book'
 
@@ -114,9 +112,9 @@ class AspectQualityFactory(factory.django.DjangoModelFactory):
 # @@@ TODO move these factories to the qualites app
 def random_hex():
     return '#%02X%02X%02X' % (
-        random.randint(0,255),
-        random.randint(0,255),
-        random.randint(0,255))
+        random.randint(0, 255),
+        random.randint(0, 255),
+        random.randint(0, 255))
 
 
 class Color(AspectQualityFactory):
@@ -157,9 +155,4 @@ class CategoryFactory(factory.django.DjangoModelFactory):
 
     title = factory.LazyAttribute(
         lambda o: lorem_ipsum.words(random.randint(1, 2), common=False).title()
-    )
-    slug = factory.LazyAttribute(
-        lambda o: slugify(
-            lorem_ipsum.words(random.randint(3, 6), common=False)
-        )
     )
