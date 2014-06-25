@@ -3,12 +3,16 @@ from django.utils.functional import cached_property
 
 from cqrs.noconflict import classmaker
 from cqrs.models import CQRSPolymorphicModel, CQRSModel
-from entropy.base import (EnabledMixin, OrderingMixin, SlugMixin, TitleMixin,
-    StartEndMixin, TextMixin)
+from entropy.base import (
+    EnabledMixin, OrderingMixin, SlugMixin, TitleMixin, StartEndMixin,
+    TextMixin
+)
 from entropy.fields import PriceField
+from images.mixins import ImageMixin
 
 
-class Offer(CQRSModel, EnabledMixin, StartEndMixin, SlugMixin, TitleMixin):
+class Offer(CQRSModel, EnabledMixin, StartEndMixin, SlugMixin, TitleMixin,
+            ImageMixin):
     '''
     An Offer is an instantiation of a Contract for a Resource as Products or
     Services upon a given Platform.
@@ -18,15 +22,17 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, SlugMixin, TitleMixin):
     An Offer may be superseeded by one or more other Related Offers which
     may or may not cumulate.
 
-    We find Offers where we have been used to finding (a catalogue of) Products.
-    Really, what we're dealing with here is an Offer of a Contract to be realised
-    under the Contract Clauses and in combination with the Offer Conditions that
-    determine things like Price (under discount or not) or a Product offered under
-    a Sales Order or Subscriptions.
+    We find Offers where we have been used to finding (a catalogue of)
+    Products.
 
-    The use of Offers opens the door to create binding Contracts, enforceable by
-    Workflow or Finite State Machines for Goods & Services offered under any crazy
-    business model that the Enterprise Agent can imagine.
+    Really, what we're dealing with here is an Offer of a Contract to be
+    realised under the Contract Clauses and in combination with the Offer
+    Conditions that determine things like Price (under discount or not) or a
+    Product offered under a Sales Order or Subscriptions.
+
+    The use of Offers opens the door to create binding Contracts, enforceable
+    by Workflow or Finite State Machines for Goods & Services offered under
+    any crazy business model that the Enterprise Agent can imagine.
 
     OR
 
@@ -35,23 +41,23 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, SlugMixin, TitleMixin):
     ## Attributes
 
     `contracts`
-        A combination of one or more Contracts offering Resources under the Conditions
-        specified by the Contract Clauses.
+        A combination of one or more Contracts offering Resources under the
+        Conditions specified by the Contract Clauses.
 
-        In this way we can effect concepts such as Bundling with a great deal of flexibility
-        for example:
+        In this way we can effect concepts such as Bundling with a great deal
+        of flexibility for example:
 
-                Product A is offered under a typical RRP SalesOrder contract, and combined in the Offer
-                with Product B, offered under a Subscription Contract.
+                Product A is offered under a typical RRP SalesOrder contract,
+                and combined in the Offer with Product B, offered under a
+                Subscription Contract.
 
                 The product text might look like:
-
-                    + Purchase Product A one time, and recieve the associated refil Product B under a
-                    12 Month Subscription.
+                    + Purchase Product A one time, and recieve the associated
+                    refil Product B under a 12 Month Subscription.
 
     `platforms`
-        The Platforms aka sales channels underwhich the Contract or Contracts mix are Offered.  In this
-        way, Offers are reuseable.
+        The Platforms aka sales channels underwhich the Contract or Contracts
+        mix are Offered. In this way, Offers are reuseable.
 
     '''
     __metaclass__ = classmaker()
@@ -66,7 +72,7 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, SlugMixin, TitleMixin):
     def __unicode__(self):
         return self.title
 
-
+    # Offer Aspects
     @cached_property
     def quantity(self):
         quantity = 0
@@ -106,6 +112,31 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, SlugMixin, TitleMixin):
 
         return discount
 
+    # Images
+    @cached_property
+    def images(self):
+        images = super(Offer, self).images
+
+        if images:
+            return images
+
+        try:
+            return self.resource_contracts.first().resource.images
+        except AttributeError:
+            return []
+
+    @cached_property
+    def image(self):
+        image = super(Offer, self).image
+
+        if image:
+            return image
+
+        try:
+            return self.resource_contracts.first().resource.image
+        except AttributeError:
+            return []
+
 
 class OfferResourceContract(CQRSModel):
     '''
@@ -122,10 +153,7 @@ class OfferResourceContract(CQRSModel):
     to support the concept of Product Bundling
     '''
 
-    offer = models.ForeignKey(
-        Offer,
-        related_name='resource_contracts'
-    )
+    offer = models.ForeignKey(Offer, related_name='resource_contracts')
     contract = models.ForeignKey('rea.Contract')
     resource = models.ForeignKey('rea.Resource')
 
@@ -139,17 +167,18 @@ class OfferResourceContract(CQRSModel):
         )
 
 
-class OfferAspect(CQRSPolymorphicModel, TextMixin, EnabledMixin, OrderingMixin, TitleMixin):
+class OfferAspect(CQRSPolymorphicModel, TextMixin, EnabledMixin, OrderingMixin,
+                  TitleMixin):
     '''
-    Each Offer must specify one or more Aspect Conditions in which the Contract Offer
-    might be valid.
+    Each Offer must specify one or more Aspect Conditions in which the
+    Contract Offer might be valid.
 
     This can include altering the Price and circumstances of the Contract.
 
-    The Contract under Offer expects to be influenced by the conditions that it is
-    Offered under.  When the Contract is finally instantiated as an Actual Contract,
-    The Conditions in which it were offered under play a part in determining its Clauses
-    and Parameters.
+    The Contract under Offer expects to be influenced by the conditions that
+    it is Offered under. When the Contract is finally instantiated as an
+    Actual Contract, the Conditions in which it were offered under play a part
+    in determining its Clauses and Parameters.
 
     ## Attributes:
 
@@ -157,8 +186,9 @@ class OfferAspect(CQRSPolymorphicModel, TextMixin, EnabledMixin, OrderingMixin, 
         the offer that this aspect should affect
 
     `chain_evaluation`
-        offer aspects can be combined to create unique Promotion Offers of any type.  The
-        chain is broken when there is a sequence discontinuation is `chain_evaluation = True`
+        offer aspects can be combined to create unique Promotion Offers of any
+        type. The chain is broken when there is a sequence discontinuation is
+        `chain_evaluation = True`
 
     `override_evaluation`
         the Offer Aspect or Offer Aspect Chain overrides all previous
@@ -171,14 +201,14 @@ class OfferAspect(CQRSPolymorphicModel, TextMixin, EnabledMixin, OrderingMixin, 
     # order
     # enabled
 
-    offer = models.ForeignKey(
-        'Offer',
-        related_name='offer_aspects'
-    )
+    offer = models.ForeignKey('Offer', related_name='offer_aspects')
 
-    chain_evaluation = models.BooleanField(default=None)  # evaluate in combination with previous others / evaluate separately
-    stop_evaluating = models.BooleanField(default=None)  # stop evaluating all other aspects beyond this one.
-    override_evaluation = models.BooleanField(default=None)  # override all previous offer aspect chains
+    # evaluate in combination with previous others / evaluate separately
+    chain_evaluation = models.BooleanField(default=None)
+    # stop evaluating all other aspects beyond this one.
+    stop_evaluating = models.BooleanField(default=None)
+    # override all previous offer aspect chains
+    override_evaluation = models.BooleanField(default=None)
 
 
 class OfferPrice(OfferAspect):
@@ -187,7 +217,8 @@ class OfferPrice(OfferAspect):
 
     Assumes the Exhange Resource is Cash?
     '''
-    offer_price = models.FloatField(blank=True)  # Need to confirm the best field type for prices.
+    # Need to confirm the best field type for prices.
+    offer_price = models.FloatField(blank=True)
 
 
 class OfferResource(OfferAspect):
@@ -229,11 +260,12 @@ class OfferEnd(OfferAspect):
 
 class OfferRelated(OfferAspect):
     '''
-    Here we might add Related Offers to the Primary Offer.  This might take the form
-    of Offering a closely Related Product to accompany the Primary Offer.
+    Here we might add Related Offers to the Primary Offer.  This might take
+    the form of Offering a closely Related Product to accompany the Primary
+    Offer.
 
-    Setting the `related_contract_price` to zero or the `related_contract_discount` to 100%
-    results in a Free Gift
+    Setting the `related_contract_price` to zero or the
+    `related_contract_discount` to 100% results in a Free Gift
     '''
 
     related_offer = models.ForeignKey(
@@ -251,6 +283,7 @@ class OfferFreeGift(OfferAspect):
             self.resource,
             self.contract
         )
+
     '''
     The existence of this Offer Aspect enables the combining with another Offer
     for Free
@@ -276,17 +309,19 @@ class OfferFreeShipping(OfferAspect):
 
 class OfferNForOne(OfferAspect):
     '''
-    Offer a quantity of the same Contract for the same Product with Product Variants.
-
+    Offer a quantity of the same Contract for the same Product with Product
+    Variants.
     '''
 
     offer_quantity = models.IntegerField()  # 2 or more
 
     # apply_to = ['category', 'product', 'variant',]  default 'product'
 
-    # XXX strategy to offer 'like' Products, i.e. offering Product Variants of the same Product.  Or
-    # open up to Products within the same Category, i.e. 't-shirts'
-    # validate on save offer_quantity
+    '''
+    XXX strategy to offer 'like' Products, i.e. offering Product Variants of
+    the same Product. Or open up to Products within the same Category, i.e.
+    't-shirts' validate on save offer_quantity
+    '''
 
 
 class OfferToAgent(OfferAspect):
@@ -325,7 +360,8 @@ class OfferCoupon(OfferAspect):
 
     '''
     # XXX Coupons have rules. Add them to determine validity.
-    coupon = models.ForeignKey('coupons.Coupon') # XXX relate to a Contract for now.
+    # XXX relate to a Contract for now.
+    coupon = models.ForeignKey('coupons.Coupon')
 
 
 class OfferOnQuote(OfferAspect):

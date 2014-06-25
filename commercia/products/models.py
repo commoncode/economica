@@ -5,10 +5,9 @@ from entropy.base import (
     EnabledMixin, SlugMixin, TitleMixin
 )
 from images.mixins import ImageMixin
-from images.models import ImageInstance
 
 from rea.models import Resource
-from rea.settings import REA_PROVIDING_AGENT_MODEL, REA_REPORTING_AGENT_ID
+from rea.settings import REA_PROVIDING_AGENT_MODEL
 
 
 '''
@@ -130,17 +129,19 @@ class Color(AspectQuality):
     hex = models.CharField(
         max_length='6')
 
-    # def hsv(self):
-        # return h, s, v
+    '''
+    def hsv(self):
+        return h, s, v
 
-    # def rgb(self):
-        # return r, g, b
+    def rgb(self):
+        return r, g, b
 
-    # def hsl(self):
-        # return h, s, l
+    def hsl(self):
+        return h, s, l
 
-    # def name
-        # determine the name from some kinda color chart
+    def name
+        determine the name from some kinda color chart
+    '''
 
 
 class Size(AspectQuality):
@@ -222,6 +223,7 @@ class SmartCollection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
     Either Products or Offers
     '''
     pass
+
 
 class SmartCollectionAspectInstance(CQRSModel):
 

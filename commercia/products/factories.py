@@ -2,7 +2,6 @@ import factory
 import random
 
 from django.contrib.webdesign import lorem_ipsum
-from django.core.management import call_command
 
 from fakers import lipservice, cosmetics, garments, vehicles
 from faker import Factory
@@ -14,18 +13,12 @@ fake = Factory.create()
 
 class ProductFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'products.Product'
+    FACTORY_DJANGO_GET_OR_CREATE = ('title', )
 
     title = factory.LazyAttribute(
         lambda o: lipservice.words(5, common=False).title())
-
-    @factory.lazy_attribute
-    def category(self):
-        categories = Category.objects.filter(parent__isnull=False)
-
-        if not categories.exists():
-            call_command('create_categories')
-
-        return random.choice(categories)
+    category = factory.LazyAttribute(
+        lambda o: random.choice(Category.objects.filter(parent__isnull=False)))
 
     @factory.post_generation
     def variants(self, create, extracted, **kwargs):

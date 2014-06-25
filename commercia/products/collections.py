@@ -1,6 +1,8 @@
 from cqrs.mongo import mongodb
-from cqrs.collections import (DRFDocumentCollection,
-    DRFPolymorphicDocumentCollection)
+from cqrs.collections import (
+    DRFDocumentCollection,
+    DRFPolymorphicDocumentCollection
+)
 
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
