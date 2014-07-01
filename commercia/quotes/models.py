@@ -15,12 +15,13 @@ class Quote(CQRSModel, CreatedMixin, ModifiedMixin):
 
     The Quote model has one or more related Quote Line Items of which contain
     an instantiated Contract under Offer on the given Platform which is further
-    parameterised with Offer Conditions which influence the nature of the Offer.
+    parameterised with Offer Conditions which influence the nature of the
+    Offer.
 
     OR
 
-    The Quote model has one or more related Quote Line Items of which contain an
-    instantiated Contract Offer or Related Contract Offer...
+    The Quote model has one or more related Quote Line Items of which contain
+    an instantiated Contract Offer or Related Contract Offer...
 
     '''
     __metaclass__ = classmaker()
@@ -32,10 +33,13 @@ class Quote(CQRSModel, CreatedMixin, ModifiedMixin):
     # modified_by
 
     platform = models.ForeignKey('platforms.Platform')
-    recieving_agent = models.ForeignKey('rea.Agent',
-        related_name='%(app_label)s_%(class)s_receiving_agents')
-    providing_agent = models.ForeignKey('rea.Agent',
-        related_name='%(app_label)s_%(class)s_providing_agents')
+    recieving_agent = models.ForeignKey(
+        'rea.Agent', null=True,
+        related_name='%(app_label)s_%(class)s_receiving_agents'
+    )
+    providing_agent = models.ForeignKey(
+        'rea.Agent', related_name='%(app_label)s_%(class)s_providing_agents'
+    )
 
     @cached_property
     def calculate_subtotal(self):
