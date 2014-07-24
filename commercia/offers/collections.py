@@ -1,8 +1,14 @@
 from cqrs.mongo import mongodb
 from cqrs.collections import DRFDocumentCollection
 
-from .models import Offer
-from .serializers import OfferSerializer
+from .models import Collection, Offer
+from .serializers import CollectionSerializer, OfferSerializer
+
+
+class CollectionDocumentCollection(DRFDocumentCollection):
+    model = Collection
+    serializer_class = CollectionSerializer
+    name = 'economica__collections'
 
 
 class OfferDocumentCollection(DRFDocumentCollection):
@@ -11,4 +17,5 @@ class OfferDocumentCollection(DRFDocumentCollection):
     name = 'economica__offers'
 
 
+mongodb.register(CollectionDocumentCollection())
 mongodb.register(OfferDocumentCollection())
