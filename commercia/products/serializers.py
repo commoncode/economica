@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
 from cqrs.serializers import CQRSPolymorphicSerializer, CQRSSerializer
-
 from images.serializers import ImageInstanceSerializer
+
 from .models import AspectQuality, Category, Product, Variant, VariantAspect
 
 

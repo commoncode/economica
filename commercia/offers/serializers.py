@@ -1,8 +1,8 @@
 from rest_framework import serializers
+
 from cqrs.serializers import CQRSSerializer, CQRSPolymorphicSerializer
 from images.serializers import ImageInstanceSerializer
 from rea_serializers.serializers import ContractSerializer, ResourceSerializer
-
 
 from . import models
 

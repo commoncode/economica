@@ -154,8 +154,12 @@ class OfferResourceContract(CQRSModel):
     '''
 
     offer = models.ForeignKey(Offer, related_name='resource_contracts')
-    contract = models.ForeignKey('rea.Contract')
-    resource = models.ForeignKey('rea.Resource')
+    contract = models.ForeignKey(
+        'rea.Contract', related_name='resource_contracts'
+    )
+    resource = models.ForeignKey(
+        'rea.Resource', related_name='resource_contracts'
+    )
 
     quantity = models.FloatField()
 
