@@ -33,7 +33,7 @@ class Command(BaseCommand):
         for i in range(quantity):
             try:
                 collection = CollectionFactory(
-                    title=faker.words(randint(2, 6)).title()
+                    title=faker.words(randint(1, 3)).title()
                 )
             except AttributeError:
                 collection = CollectionFactory()

@@ -18,13 +18,15 @@ class Command(BaseCommand):
             return 'Please run ./manage.py create_collections [type] [number]'
 
         top_limit = len(collections)
+        top_limit = 3 if top_limit > 3 else top_limit
 
         for product in Product.objects.all():
             offer = factories.OfferFactory()
             offer.collections.add(*random.sample(
-                collections, random.randint(2, top_limit))
+                collections, random.randint(1, top_limit))
             )
             resource = factories.OfferResourceFactory(resource=product)
             factories.OfferResourceContractFactory(
                 offer=offer, resource=resource
             )
+            offer.save()
