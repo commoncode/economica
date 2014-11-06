@@ -11,8 +11,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for i in range(randint(6, 9)):
             category = CategoryFactory()
-            print 'Category: {}'.format(category)
+            print('Category: {}'.format(category))
 
             for j in range(randint(3, 6)):
                 subcategory = CategoryFactory(parent=category)
-                print 'Subcategory: {}'.format(subcategory)
+                print('Subcategory: {}'.format(subcategory))

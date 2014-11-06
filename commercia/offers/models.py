@@ -11,6 +11,21 @@ from entropy.fields import PriceField
 from images.mixins import ImageMixin
 
 
+#
+# Collections
+#
+class Collection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
+    '''
+    An arbitrary Collection of Offers according to Promotional themes.
+    '''
+
+    def __unicode__(self):
+        return self.title
+
+
+#
+# Offers
+#
 class Offer(CQRSModel, EnabledMixin, StartEndMixin, SlugMixin, TitleMixin,
             ImageMixin):
     '''
@@ -62,12 +77,12 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, SlugMixin, TitleMixin,
     '''
     __metaclass__ = classmaker()
 
+    # enabled
     # start
     # end (optional)
-    # enabled
 
     collections = models.ManyToManyField('Collection', related_name='offers')
-    platforms = models.ManyToManyField('platforms.Platform')
+    # platforms = models.ManyToManyField('platforms.Platform')
 
     def __unicode__(self):
         return self.title
@@ -135,7 +150,7 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, SlugMixin, TitleMixin,
         try:
             return self.resource_contracts.first().resource.image
         except AttributeError:
-            return []
+            return None
 
 
 class OfferResourceContract(CQRSModel):
@@ -153,21 +168,19 @@ class OfferResourceContract(CQRSModel):
     to support the concept of Product Bundling
     '''
 
-    offer = models.ForeignKey(Offer, related_name='resource_contracts')
+    offer = models.ForeignKey('Offer', related_name='resource_contracts')
     contract = models.ForeignKey(
         'rea.Contract', related_name='resource_contracts'
     )
     resource = models.ForeignKey(
-        'rea.Resource', related_name='resource_contracts'
+        'OfferResource', related_name='resource_contracts'
     )
 
     quantity = models.FloatField()
 
     def __unicode__(self):
-        return '%s of %s under %s' % (
-            self.quantity,
-            self.resource,
-            self.contract
+        return '{} of {} under {}'.format(
+            self.quantity, self.resource, self.contract
         )
 
 
@@ -209,8 +222,10 @@ class OfferAspect(CQRSPolymorphicModel, TextMixin, EnabledMixin, OrderingMixin,
 
     # evaluate in combination with previous others / evaluate separately
     chain_evaluation = models.BooleanField(default=None)
+
     # stop evaluating all other aspects beyond this one.
     stop_evaluating = models.BooleanField(default=None)
+
     # override all previous offer aspect chains
     override_evaluation = models.BooleanField(default=None)
 
@@ -273,21 +288,13 @@ class OfferRelated(OfferAspect):
     '''
 
     related_offer = models.ForeignKey(
-        'Offer',
-        related_name='%(app_label)s_%(class)s_related_offer')
+        'Offer', related_name='%(app_label)s_%(class)s_related_offer'
+    )
     related_contract_price = models.FloatField()
     related_contract_discount = models.FloatField()
 
 
 class OfferFreeGift(OfferAspect):
-
-    def __unicode__(self):
-        return '%s of %s under %s' % (
-            self.quantity,
-            self.resource,
-            self.contract
-        )
-
     '''
     The existence of this Offer Aspect enables the combining with another Offer
     for Free
@@ -295,6 +302,11 @@ class OfferFreeGift(OfferAspect):
     free_offer = models.ForeignKey(
         'Offer',
         related_name='%(app_label)s_%(class)s_free_offer')
+
+    def __unicode__(self):
+        return '{} of {} under {}'.format(
+            self.quantity, self.resource, self.contract
+        )
 
 
 class OfferFreeShipping(OfferAspect):
@@ -374,15 +386,3 @@ class OfferOnQuote(OfferAspect):
     Offer.  Such as OfferFreeGift.
     '''
     minimum = PriceField()
-
-
-#
-# Collections
-#
-class Collection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
-    '''
-    An arbitrary Collection of Offers according to Promotional themes.
-    '''
-
-    def __unicode__(self):
-        return self.title

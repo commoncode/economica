@@ -32,7 +32,7 @@ class Quote(CQRSModel, CreatedMixin, ModifiedMixin):
     # modified_at
     # modified_by
 
-    platform = models.ForeignKey('platforms.Platform')
+    # platform = models.ForeignKey('platforms.Platform')
     recieving_agent = models.ForeignKey(
         'rea.Agent', null=True,
         related_name='%(app_label)s_%(class)s_receiving_agents'

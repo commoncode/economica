@@ -1,48 +1,56 @@
-from random import choice, randint
+from random import randint
 
-from django.conf import settings
-from django.core.management import call_command
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from ... import factories
-from ... import models
 
-PRODUCT_FACTORIES = (
-    factories.BookFactory,
-    factories.CosmeticFactory,
-    factories.FoodFactory,
-    factories.GarmentFactory,
-    factories.SoftwareFactory,
-    factories.VehicleFactory,
-)
 
 class Command(BaseCommand):
-    help = 'Create a sample of Products'
+    args = '<type> [quantity]'
+    help = (
+        'Product types: book | cosmetic | food | garment | software | vehicle'
+    )
 
     def handle(self, *args, **options):
-        factories.Color()
+        try:
+            factory = {
+                'book': factories.BookFactory,
+                'cosmetic': factories.CosmeticFactory,
+                'food': factories.FoodFactory,
+                'garment': factories.GarmentFactory,
+                'software': factories.SoftwareFactory,
+                'vehicle': factories.VehicleFactory
+            }.get(args[0].lower())
+        except IndexError:
+            return (
+                'Please declare a type of product, read help for available '
+                'options.'
+            )
 
-        categories = models.Category.objects.all()
+        try:
+            quantity = int(args[1])
+        except IndexError:
+            quantity = randint(20, 30)
 
-        if not categories.exists():
-            call_command('create_categories')
+        try:
+            products = []
 
-        for i in range(randint(5, 15)):
-            product = choice(PRODUCT_FACTORIES)(category=choice(categories))
-            print 'Product: {} :: Title: {} :: Category: {}'.format(
-                product.__class__, product.title, product.category)
+            print('Creating Products')
 
+            for i in range(quantity):
+                product = factory()
+                products.append(product)
+                print('{}: {}'.format(args[0].title(), product))
+        except ValueError:
+            return 'Run create_categories first.'
+        except TypeError:
+            return 'Product type not available'
+
+        print('Adding Variants')
+
+        for product in products:
             variant = factories.VariantFactory(product=product)
-            print 'Added Variant {} to product {}'.format(variant, product)
 
-            variant_color_aspect = factories.VariantColorAspectFactory(
-                variant=variant)
-            print 'Added Variant Color Aspect {} to variant {}'.format(
-                variant_color_aspect.color.hex, variant)
-
-            variant_size_aspect = factories.VariantSizeAspectFactory(
-                variant=variant)
-            print 'Added Variant Size Aspect {} to variant {}'.format(
-                variant_size_aspect.size.dimension, variant)
-
-            product.save()
+            for i in range(randint(2, 4)):
+                factories.VariantColorAspectFactory(variant=variant)
+                factories.VariantSizeAspectFactory(variant=variant)

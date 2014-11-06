@@ -1,28 +1,50 @@
-import factory
+from datetime import date
 import random
+import string
 
-from django.contrib.webdesign import lorem_ipsum
+import factory
 
-from fakers import lipservice, cosmetics, garments, vehicles
-from faker import Factory
+from django.utils.text import slugify
 
+from commercia.fakers import (
+    cosmetics, garments, lorem_ipsum, meals, software, vehicles
+)
 from .models import Category
 
-fake = Factory.create()
+
+def randate(start_year=1920, end_year=2015):
+    return date(
+        random.randint(start_year, end_year),
+        random.randint(1, 12),
+        random.randint(1, 28)
+    )
+
+
+def randstring(length=9):
+    return ''.join(random.choice(
+        string.ascii_uppercase + string.digits
+    ) for chart in range(length))
 
 
 class ProductFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'products.Product'
-    FACTORY_DJANGO_GET_OR_CREATE = ('title', )
+    FACTORY_DJANGO_GET_OR_CREATE = ('slug', )
 
     title = factory.LazyAttribute(
-        lambda o: lipservice.words(5, common=False).title())
+        lambda o: lorem_ipsum.words(random.randint(2, 5)).title()
+    )
+    slug = factory.LazyAttribute(lambda o: slugify(o.title))
     category = factory.LazyAttribute(
-        lambda o: random.choice(Category.objects.filter(parent__isnull=False)))
+        lambda o: Category.objects.filter(
+            parent__isnull=False
+        ).order_by('?').first()
+    )
+    sku = factory.LazyAttribute(
+        lambda o: randstring()
+    )
 
     @factory.post_generation
     def variants(self, create, extracted, **kwargs):
-
         if not create:
             # Simple build, do nothing.
             return
@@ -38,26 +60,53 @@ class ProductFactory(factory.django.DjangoModelFactory):
 #
 class BookFactory(ProductFactory):
     FACTORY_FOR = 'products.Book'
+    FACTORY_DJANGO_GET_OR_CREATE = ('title', )
 
-    isbn = '1234567890'
+    title = factory.LazyAttribute(
+        lambda o: lorem_ipsum.words(random.randint(2, 5)).title()
+    )
+    description = factory.LazyAttribute(
+        lambda o: lorem_ipsum.paragraphs(random.randint(2, 5))
+    )
+    genre = factory.LazyAttribute(lambda o: randstring())
+    isbn = factory.LazyAttribute(lambda o: randstring())
+    year = factory.LazyAttribute(lambda o: randate())
 
 
 class CosmeticFactory(ProductFactory):
     FACTORY_FOR = 'products.Cosmetic'
+    FACTORY_DJANGO_GET_OR_CREATE = ('title', )
 
     title = factory.LazyAttribute(
-        lambda o: cosmetics.words(3, common=False).title())
+        lambda o: cosmetics.words(random.randint(2, 5)).title()
+    )
+    description = factory.LazyAttribute(
+        lambda o: cosmetics.paragraphs(random.randint(2, 5))
+    )
 
 
 class FoodFactory(ProductFactory):
     FACTORY_FOR = 'products.Food'
+    FACTORY_DJANGO_GET_OR_CREATE = ('title', )
+
+    title = factory.LazyAttribute(
+        lambda o: meals.words(random.randint(2, 5)).title()
+    )
+    description = factory.LazyAttribute(
+        lambda o: meals.paragraphs(random.randint(2, 5))
+    )
 
 
 class GarmentFactory(ProductFactory):
     FACTORY_FOR = 'products.Garment'
+    FACTORY_DJANGO_GET_OR_CREATE = ('title', )
 
     title = factory.LazyAttribute(
-        lambda o: garments.words(3, common=False).title())
+        lambda o: garments.words(random.randint(2, 5)).title()
+    )
+    description = factory.LazyAttribute(
+        lambda o: garments.paragraphs(random.randint(2, 5))
+    )
 
 
 class SessionFactory(ProductFactory):
@@ -66,17 +115,28 @@ class SessionFactory(ProductFactory):
 
 class SoftwareFactory(ProductFactory):
     FACTORY_FOR = 'products.Software'
+    FACTORY_DJANGO_GET_OR_CREATE = ('title', )
+
+    title = factory.LazyAttribute(
+        lambda o: software.words(random.randint(2, 5)).title()
+    )
+    description = factory.LazyAttribute(
+        lambda o: software.paragraphs(random.randint(2, 5))
+    )
+    license = factory.LazyAttribute(lambda o: random.randint(0, 2))
 
 
 class VehicleFactory(ProductFactory):
     FACTORY_FOR = 'products.Vehicle'
+    FACTORY_DJANGO_GET_OR_CREATE = ('title', )
 
     title = factory.LazyAttribute(
-        lambda o: vehicles.words(3, common=False).title())
-
-    # make
-    # model
-    # registration
+        lambda o: vehicles.words(random.randint(2, 5)).title()
+    )
+    description = factory.LazyAttribute(
+        lambda o: vehicles.paragraphs(random.randint(2, 5))
+    )
+    year = factory.LazyAttribute(lambda o: randate())
 
 
 #
@@ -99,42 +159,42 @@ class AspectQualityFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'products.AspectQuality'
 
     title = factory.LazyAttribute(
-        lambda o: vehicles.words(3, common=False).title())
+        lambda o: lorem_ipsum.words(random.randint(2, 5)).title()
+    )
 
 
 # @@@ TODO move these factories to the qualites app
-def random_hex():
-    return '#%02X%02X%02X' % (
-        random.randint(0, 255),
-        random.randint(0, 255),
-        random.randint(0, 255))
-
-
 class Color(AspectQualityFactory):
     FACTORY_FOR = 'products.Color'
 
-    # @@@ TODO overwrite title with a color faker tile
-
     hex = factory.LazyAttribute(
-        lambda o: random_hex())
+        lambda o: '#{:02X}{:02X}{:02X}'.format(
+            random.randint(0, 255),
+            random.randint(0, 255),
+            random.randint(0, 255)
+        )
+    )
 
 
 class Size(AspectQualityFactory):
     FACTORY_FOR = 'products.Size'
 
-    # @@@ TODO make these dynamic fakers
-    dimension = 'Foot'
-    measure = '12'
+    dimension = factory.LazyAttribute(
+        lambda o: random.choice(['Centimeter', 'Foot', 'Inch', 'Yard'])
+    )
+    measure = factory.LazyAttribute(lambda o: random.randint(1, 12))
 
 
 class VariantColorAspectFactory(VariantAspectFactory):
     FACTORY_FOR = 'products.VariantColorAspect'
+    FACTORY_DJANGO_GET_OR_CREATE = ('variant', 'color')
 
     color = factory.SubFactory(Color)
 
 
 class VariantSizeAspectFactory(VariantAspectFactory):
     FACTORY_FOR = 'products.VariantSizeAspect'
+    FACTORY_DJANGO_GET_OR_CREATE = ('variant', 'size')
 
     size = factory.SubFactory(Size)
 

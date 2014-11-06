@@ -1,15 +1,20 @@
-from django.contrib.webdesign import lorem_ipsum
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
+from django.utils.six.moves import input
 
-from ... import factories
-from ... import models
+from ...models import Offer, OfferResource, OfferResourceContract
 
 
 class Command(BaseCommand):
-
     help = 'Remove all sample of Offers'
 
     def handle(self, *args, **options):
+        confirm = input(
+            'Do you really want to remove all the Offers? '
+            'Type \'yes\' to continue, \'no\' to cancel. '
+        )
 
-        models.Offer.objects.all().delete()
+        if confirm == 'yes':
+            OfferResourceContract.objects.all().delete()
+            OfferResource.objects.all().delete()
+            Offer.objects.all().delete()
+            print('Offers removed')

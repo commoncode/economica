@@ -1,7 +1,7 @@
 from cqrs.mongo import mongodb
 from cqrs.collections import DRFDocumentCollection
 
-from .models import Quote, QuoteItem
+from .models import Quote
 from .serializers import QuoteSerializer
 
 

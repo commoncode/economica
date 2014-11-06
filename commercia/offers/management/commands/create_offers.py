@@ -1,35 +1,27 @@
-from random import choice, randint
+import random
 
-from django.contrib.webdesign import lorem_ipsum
-from django.conf import settings
-from django.core.management import call_command
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
+from commercia.products.models import Product
+
+from ...models import Collection
 from ... import factories
-from ... import models
 
 
 class Command(BaseCommand):
     help = 'Create a sample of Offers'
 
     def handle(self, *args, **options):
-        collections = models.Collection.objects.all()
+        collections = Collection.objects.all()
 
         if not collections.exists():
-            call_command('create_collections')
+            return 'Please run ./manage.py create_collections [type] [number]'
 
-        for i in range(randint(15, 20)):
-            offer = factories.OfferFactory()
-
-            for j in range(2):
-                offer.collections.add(choice(collections))
-
-            print 'Offer: {}'.format(offer)
-
-            orc = factories.OfferResourceContractFactory(offer=offer)
-            print 'Added: {}'.format(orc)
-
-            onfo = factories.OfferNForOneFactory(offer=offer)
-            print 'Added: {}'.format(onfo)
-
-            offer.save()
+        for product in Product.objects.all():
+            offer = factories.OfferFactory(collections=random.sample(
+                collections, random.randint(2, 4))
+            )
+            resource = factories.OfferResourceFactory(resource=product)
+            factories.OfferResourceContractFactory(
+                offer=offer, resource=resource
+            )

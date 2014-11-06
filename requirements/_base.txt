@@ -1,14 +1,6 @@
-# Django
-# django 1.7 alpha 1
-git+ssh://git@github?/.com/django/django.git@8be9a250c190d9dd8615da4616cdfe401ad6e0af
+# Base Economica Requirements
+Django
 
 
-# Django apps
-django-extensions==1.0.0
-
-# Python packages
-Pillow==1.7.7
-
-
-# Documentation
-Sphinx
+## Python Packages
+# zerorpc

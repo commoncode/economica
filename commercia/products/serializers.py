@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from rest_framework import serializers
 
 from cqrs.serializers import CQRSPolymorphicSerializer, CQRSSerializer
@@ -30,7 +32,7 @@ class VariantAspectSerializer(CQRSPolymorphicSerializer):
         model = VariantAspect
 
 
-class VariantSerlizer(CQRSSerializer):
+class VariantSerializer(CQRSSerializer):
     aspects = VariantAspectSerializer(many=True)
 
     class Meta:
@@ -40,7 +42,15 @@ class VariantSerlizer(CQRSSerializer):
 class ProductSerializer(CQRSPolymorphicSerializer):
     category = CategorySerializer()
     images = ImageInstanceSerializer(many=True)
-    variants = VariantSerlizer(many=True)
+    variants = VariantSerializer(many=True)
+    year = serializers.SerializerMethodField('year_datetime')
 
     class Meta:
         model = Product
+
+    def year_datetime(self, obj):
+        try:
+            return datetime.combine(obj.year, datetime.min.time())
+        except AttributeError:
+            # Product doesn't have year field
+            pass

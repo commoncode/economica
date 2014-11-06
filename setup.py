@@ -1,33 +1,36 @@
 from setuptools import setup, find_packages
 
-setup( name='economica',
-    version = '0.0.2',
-    description = 'Economica for Django',
-    author = 'Daryl Antony',
-    author_email = 'daryl@commoncode.com.au',
-    url = 'https://github.com/commoncode/economica',
-    keywords = ['django',],
-    packages = find_packages(),
-    include_package_data = True,
-    zip_safe = False,
-    classifiers = [
+
+repositories = [
+    'cqrs',
+    'entropy',
+    'images',
+    'rea',
+    'rea-serializers'
+]
+
+setup(
+    name='economica',
+    version='0.0.3',
+    description='Economica for Django',
+    author='Daryl Antony',
+    author_email='daryl@commoncode.com.au',
+    url='https://github.com/commoncode/economica',
+    keywords=['django', 'ecommerce'],
+    packages=find_packages(),
+    include_package_data=True,
+    zip_safe=False,
+    classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
-        'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
     ],
-    dependency_links = [
-        'http://github.com/commoncode/entropy/tarball/master#egg=django-entropy-0.0.3',
-        'http://github.com/commoncode/rea/tarball/master#egg=rea-0.0.2',
-        'http://github.com/commoncode/rea-collections/tarball/master#egg=rea-collections-0.0.1',
-        'http://github.com/commoncode/rea-patterns-b2c/tarball/master#egg=rea-patterns-b2c-0.0.1',
+    dependency_links=[
+        'http://github.com/commoncode/{0}/tarball/master#egg={0}'.format(
+            repository
+        ) for repository in repositories
     ],
-    setup_requires = [
-        'pip',
-    ],
-    install_requires = [
-        'django-entropy',
-        'rea',
-    ],
+    setup_requires=['pip'],
+    install_requires=['Django>=1.7'] + repositories
 )

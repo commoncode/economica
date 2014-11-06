@@ -2,14 +2,18 @@
 -r _base.txt
 
 
-# Editable Git Repo Common Code apps 
+## Python Packages
+Fabric
+factory_boy
+Sphinx
 
-## — update SHA keys in _server_base.txt
-## - bump minor version numbers in setup.py to force upgrade during deploy
+## Django Apps
+django-debug-toolbar
 
+## Editable Git Repo Common Code apps
+-e git+ssh://git@github.com/commoncode/cqrs.git#egg=cqrs
 -e git+ssh://git@github.com/commoncode/entropy.git#egg=entropy
--e git+ssh://git@github.com/commoncode/menus.git#egg=menus
--e git+ssh://git@github.com/commoncode/pages.git#egg=pages
--e git+ssh://git@github.com/commoncode/posts.git#egg=posts
--e git+ssh://git@github.com/commoncode/platforms.git#egg=platforms
+-e git+ssh://git@github.com/commoncode/images.git#egg=images
 -e git+ssh://git@github.com/commoncode/rea.git#egg=rea
+-e git+ssh://git@github.com/commoncode/rea-serializers.git#egg=rea-serializers
+-e git+ssh://git@github.com/commoncode/rea-patterns-b2c.git#egg=rea-patterns-b2c

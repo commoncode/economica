@@ -1,6 +1,2 @@
 # Staging Server Requirements
--r _base.txt
-
-# PostgreSQL
-gunicorn==0.14.6
-psycopg2==2.5
+-r _base_server.txt

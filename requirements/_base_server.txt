@@ -1,0 +1,15 @@
+# Common Requirements for Server Deploys: Production and Staging
+-r _base.txt
+
+
+## Python Packages
+psycopg2
+gunicorn
+
+## Common Code apps
+git+ssh://git@github.com/commoncode/cqrs.git#egg=cqrs
+git+ssh://git@github.com/commoncode/entropy.git#egg=entropy
+git+ssh://git@github.com/commoncode/images.git#egg=images
+git+ssh://git@github.com/commoncode/rea.git#egg=rea
+git+ssh://git@github.com/commoncode/rea-serializers.git#egg=rea-serializers
+git+ssh://git@github.com/commoncode/rea-patterns-b2c.git#egg=rea-patterns-b2c

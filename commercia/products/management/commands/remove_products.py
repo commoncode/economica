@@ -1,22 +1,20 @@
-from django.contrib.webdesign import lorem_ipsum
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
+from django.utils.six.moves import input
 
-from ... import factories
-from ... import models
+from ...models import Product, Variant, VariantAspect
 
 
 class Command(BaseCommand):
-
-    help = 'Remove all sample of Offers'
+    help = 'Remove all Products'
 
     def handle(self, *args, **options):
+        confirm = input(
+            'Do you really want to remove all the Products? '
+            'Type \'yes\' to continue, \'no\' to cancel. '
+        )
 
-        products = models.Product.objects.all()
-
-        for product in products:
-            try:
-                product.delete()
-                print 'deleted!'
-            except models.Product.DoesNotExist as e:
-                print '%s :: %s' % (e, product)
+        if confirm == 'yes':
+            VariantAspect.objects.all().delete()
+            Variant.objects.all().delete()
+            Product.objects.all().delete()
+            print('Offers removed')

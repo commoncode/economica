@@ -1,5 +1,10 @@
 from economica.settings.common import *
 
+import djcelery
+
+
+djcelery.setup_loader()
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -14,13 +19,12 @@ DATABASES = {
     }
 }
 
+INSTALLED_APPS += ('djcelery', )
 
-## Celery distributed task queue
-import djcelery
-djcelery.setup_loader()
-INSTALLED_APPS = INSTALLED_APPS + ['djcelery',]
-BROKER_URL = 'amqp://economica_staging:economica_staging@queue.commoncode.com.au:5672/economica_staging'
-
+BROKER_URL = (
+    'amqp://economica_staging:economica_staging@queue.commoncode.com.au:5672/'
+    'economica_staging'
+)
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -37,33 +41,4 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': 'localhost:11211'
     },
-}
-
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    }
 }
