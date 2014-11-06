@@ -17,9 +17,12 @@ class Command(BaseCommand):
         if not collections.exists():
             return 'Please run ./manage.py create_collections [type] [number]'
 
+        top_limit = len(collections)
+
         for product in Product.objects.all():
-            offer = factories.OfferFactory(collections=random.sample(
-                collections, random.randint(2, 4))
+            offer = factories.OfferFactory()
+            offer.collections.add(*random.sample(
+                collections, random.randint(2, top_limit))
             )
             resource = factories.OfferResourceFactory(resource=product)
             factories.OfferResourceContractFactory(
