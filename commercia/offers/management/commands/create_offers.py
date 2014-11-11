@@ -25,8 +25,18 @@ class Command(BaseCommand):
             offer.collections.add(*random.sample(
                 collections, random.randint(1, top_limit))
             )
-            resource = factories.OfferResourceFactory(resource=product)
+            factories.OfferResourceFactory(offer=offer, resource=product)
+            factories.OfferPriceFactory(offer=offer)
+            factories.OfferNForOneFactory(offer=offer)
+
+            if bool(random.getrandbits(1)):
+                factories.OfferDiscountFactory(offer=offer)
+
+            # What exactly OfferResourceContract do?
+            '''
             factories.OfferResourceContractFactory(
                 offer=offer, resource=resource
             )
+            '''
+
             offer.save()

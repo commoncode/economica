@@ -8,4 +8,3 @@ class OffersConfig(AppConfig):
 
     def ready(self):
         import_module('commercia.offers.collections')
-        import_module('commercia.offers.signals')
