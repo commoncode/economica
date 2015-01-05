@@ -1,4 +1,3 @@
-=========
 Economica
 =========
 
@@ -10,7 +9,26 @@ Based on Resources, Events, Agents (REA) accounting model to empower developers 
 
 Build a single web store, build a multi-channel retail enterprise, build a completely new business model with Economica.
 
-Built with Django
+Built with Django.
+
+
+Set up
+------
+
+With mongod running...
+
+```
+mkvirtualenv economica
+git clone git@github.com:commoncode/economica.git
+cd economica
+pip install -r requirements/local.txt
+./manage.py migrate
+./manage.py create_categories
+./manage.py create_products <type> [quantity]
+./manage.py create_collections <type> [quantity]
+./manage.py create_offers
+./manage.py runserver
+```
 
 
 Resources
