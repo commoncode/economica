@@ -43,8 +43,6 @@ class Command(BaseCommand):
                 print('{}: {}'.format(args[0].title(), product))
         except ValueError:
             return 'Run create_categories first.'
-        except TypeError:
-            return 'Product type not available'
 
         print('Adding Variants')
 

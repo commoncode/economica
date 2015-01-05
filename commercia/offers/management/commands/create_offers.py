@@ -23,20 +23,19 @@ class Command(BaseCommand):
         for product in Product.objects.all():
             offer = factories.OfferFactory()
             offer.collections.add(*random.sample(
-                collections, random.randint(1, top_limit))
+                collections, random.randint(1, top_limit)
+            ))
+
+            resource = factories.OfferResourceFactory(
+                offer=offer, resource=product
             )
-            factories.OfferResourceFactory(offer=offer, resource=product)
+            factories.OfferResourceContractFactory(
+                offer=offer, resource=resource
+            )
             factories.OfferPriceFactory(offer=offer)
             factories.OfferNForOneFactory(offer=offer)
 
             if bool(random.getrandbits(1)):
                 factories.OfferDiscountFactory(offer=offer)
-
-            # What exactly OfferResourceContract do?
-            '''
-            factories.OfferResourceContractFactory(
-                offer=offer, resource=resource
-            )
-            '''
 
             offer.save()

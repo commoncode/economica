@@ -27,6 +27,7 @@ MIDDLEWARE_CLASSES += (
 
 INSTALLED_APPS += (
     'debug_toolbar',
+    'django_extensions',
 )
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.

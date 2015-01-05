@@ -7,8 +7,11 @@ Fabric
 factory_boy
 Sphinx
 
+
 ## Django Apps
 django-debug-toolbar
+django-extensions
+
 
 ## Editable Git Repo Common Code apps
 -e git+ssh://git@github.com/commoncode/cqrs.git#egg=cqrs
