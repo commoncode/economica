@@ -27,6 +27,8 @@ pip install -r requirements/local.txt
 ./manage.py create_products <type> [quantity]
 ./manage.py create_collections <type> [quantity]
 ./manage.py create_offers
+./manage.py create_images
+./manage.py create_image_instances offers.Offer
 ./manage.py runserver
 ```
 
