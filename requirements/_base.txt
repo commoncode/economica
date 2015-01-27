@@ -1,6 +1,6 @@
 # Base Economica Requirements
 Django
-
+django-classy-settings
 
 ## Python Packages
 # zerorpc
