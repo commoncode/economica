@@ -2,7 +2,7 @@ from random import randint
 
 from django.core.management.base import BaseCommand
 
-from commercia.fakers import cosmetics, meals, garments, software, vehicles
+from fakers import cosmetics, meals, garments, software, vehicles
 
 from ...factories import CollectionFactory
 

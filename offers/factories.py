@@ -5,7 +5,7 @@ import factory
 
 from django.template.defaultfilters import slugify
 
-from commercia.fakers import lorem_ipsum
+from fakers import lorem_ipsum
 
 
 class OfferFactory(factory.django.DjangoModelFactory):
@@ -67,7 +67,7 @@ class OfferResourceFactory(OfferAspectFactory):
     FACTORY_FOR = 'offers.OfferResource'
 
     resource = factory.SubFactory(
-        'commercia.products.factories.ProductFactory'
+        'products.factories.ProductFactory'
     )
     quantity = factory.LazyAttribute(
         lambda o: random.randrange(0, 100)

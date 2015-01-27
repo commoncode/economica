@@ -1,12 +1,12 @@
-
-
 Economica is an online economic framework for building out business models online.
+
 
 ## Quotes not Carts
 
 It is also a Shopping Cart — however, we handle it a little differently.  Instead of the 'Cart' metaphor being used in our model definitions, we use the word Quote.  Every 'cart' in the Shopping Cart sense, is a Quote in preparation.
 
 To preserve the expected user experience, however, we let you label a Quote whatever for you users, Carts, Baskets, Bags or any other collective noun you like.
+
 
 ### Why not a Shopping Cart
 
@@ -98,9 +98,3 @@ In our Brave New World, Common Code will lead the most promising Social Enterpri
 + Commitment to make an Economic Event according to the Contract Clauses
   - Economic Event results
 + New Contract Clause arrangements digress if not met.
-
-
-
-
-
-

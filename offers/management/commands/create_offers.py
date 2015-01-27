@@ -2,7 +2,7 @@ import random
 
 from django.core.management.base import BaseCommand
 
-from commercia.products.models import Product
+from products.models import Product
 
 from ...models import Collection
 from ... import factories

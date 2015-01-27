@@ -2,11 +2,6 @@ import factory
 
 from django.contrib.webdesign import lorem_ipsum
 
-from faker import Factory
-from fakers import lipservice
-
-fake = Factory.create()
-
 
 class AgentFactory(factory.DjangoModelFactory):
     FACTORY_FOR = 'rea.Agent'
@@ -34,4 +29,4 @@ class QuoteItemFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'quotes.QuoteItem'
 
     quote = factory.SubFactory(QuoteFactory)
-    offer = factory.SubFactory('commercia.offers.factories.OfferFactory')
+    offer = factory.SubFactory('offers.factories.OfferFactory')

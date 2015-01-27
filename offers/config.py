@@ -1,10 +1,12 @@
 from django.apps import AppConfig
+from django.conf import settings
 from django.utils.importlib import import_module
 
 
 class OffersConfig(AppConfig):
-    name = 'commercia.offers'
+    name = 'offers'
     verbose_name = 'Offers'
 
     def ready(self):
-        import_module('commercia.offers.collections')
+        if getattr(settings, 'CQRS_SERIALIZE'):
+            import_module('offers.collections')

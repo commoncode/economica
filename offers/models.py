@@ -10,7 +10,7 @@ from entropy.base import (
 from entropy.fields import PriceField
 from images.mixins import ImageMixin
 
-
+"""
 #
 # Collections
 #
@@ -21,6 +21,7 @@ class Collection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
 
     def __unicode__(self):
         return self.title
+"""
 
 
 #
@@ -81,13 +82,14 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, SlugMixin, TitleMixin,
     # start
     # end (optional)
 
-    collections = models.ManyToManyField('Collection', related_name='offers')
+    # collections = models.ManyToManyField('Collection', related_name='offers')
     # platforms = models.ManyToManyField('platforms.Platform')
 
     def __unicode__(self):
         return self.title
 
     # Offer Aspects
+    """
     @cached_property
     def quantity(self):
         quantity = 0
@@ -126,6 +128,7 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, SlugMixin, TitleMixin,
                 break
 
         return discount
+    """
 
     # Images
     @cached_property
@@ -152,7 +155,7 @@ class Offer(CQRSModel, EnabledMixin, StartEndMixin, SlugMixin, TitleMixin,
         except AttributeError:
             return None
 
-
+"""
 class OfferResourceContract(CQRSModel):
     '''
     Conjunct the Contract under which the Resource is Offered, e.g.:
@@ -182,8 +185,8 @@ class OfferResourceContract(CQRSModel):
         return '{} of {} under {}'.format(
             self.quantity, self.resource, self.contract
         )
-
-
+"""
+"""
 class OfferAspect(CQRSPolymorphicModel, TextMixin, EnabledMixin, OrderingMixin,
                   TitleMixin):
     '''
@@ -228,8 +231,8 @@ class OfferAspect(CQRSPolymorphicModel, TextMixin, EnabledMixin, OrderingMixin,
 
     # override all previous offer aspect chains
     override_evaluation = models.BooleanField(default=None)
-
-
+"""
+"""
 class OfferPrice(OfferAspect):
     '''
     Offer Price for the given Contract
@@ -238,8 +241,8 @@ class OfferPrice(OfferAspect):
     '''
     # Need to confirm the best field type for prices.
     offer_price = models.FloatField(blank=True)
-
-
+"""
+"""
 class OfferResource(OfferAspect):
     '''
     Optionally specify other Resource to satisfy the exchange,
@@ -247,16 +250,16 @@ class OfferResource(OfferAspect):
     '''
     resource = models.ForeignKey('rea.Resource')
     quantity = models.FloatField()
-
-
+"""
+"""
 class OfferDiscount(OfferAspect):
     '''
     Offer a Discount in the form of a Percentage or Deduction
     '''
     offer_discount = models.FloatField()
     offer_discount_is_percentage = models.BooleanField(default=True)
-
-
+"""
+"""
 class OfferValidUntil(OfferAspect, StartEndMixin):
     '''
     Here we add a Validity period for an Aspect Condition of the Offer.
@@ -267,16 +270,16 @@ class OfferValidUntil(OfferAspect, StartEndMixin):
     # start
     # end (optional)
     pass
-
-
+"""
+"""
 class OfferStart(OfferAspect):
     pass
-
-
+"""
+"""
 class OfferEnd(OfferAspect):
     pass
-
-
+"""
+"""
 class OfferRelated(OfferAspect):
     '''
     Here we might add Related Offers to the Primary Offer.  This might take
@@ -292,8 +295,8 @@ class OfferRelated(OfferAspect):
     )
     related_contract_price = models.FloatField()
     related_contract_discount = models.FloatField()
-
-
+"""
+"""
 class OfferFreeGift(OfferAspect):
     '''
     The existence of this Offer Aspect enables the combining with another Offer
@@ -307,8 +310,8 @@ class OfferFreeGift(OfferAspect):
         return '{} of {} under {}'.format(
             self.quantity, self.resource, self.contract
         )
-
-
+"""
+"""
 class OfferFreeShipping(OfferAspect):
     '''
     Offer Free Shipping
@@ -321,8 +324,8 @@ class OfferFreeShipping(OfferAspect):
         )
     '''
     offer_free_shipping = models.BooleanField(default=None)
-
-
+"""
+"""
 class OfferNForOne(OfferAspect):
     '''
     Offer a quantity of the same Contract for the same Product with Product
@@ -338,8 +341,8 @@ class OfferNForOne(OfferAspect):
     the same Product. Or open up to Products within the same Category, i.e.
     't-shirts' validate on save offer_quantity
     '''
-
-
+"""
+"""
 class OfferToAgent(OfferAspect):
     '''
     Theoretically offer a unique set of Agents an Offer Aspect based
@@ -363,8 +366,8 @@ class OfferToAgent(OfferAspect):
     agents = models.ManyToManyField('rea.Agent')
 
     reason = models.TextField()
-
-
+"""
+"""
 class OfferCoupon(OfferAspect):
     '''
     Coupons Rules
@@ -378,11 +381,12 @@ class OfferCoupon(OfferAspect):
     # XXX Coupons have rules. Add them to determine validity.
     # XXX relate to a Contract for now.
     coupon = models.ForeignKey('coupons.Coupon')
-
-
+"""
+"""
 class OfferOnQuote(OfferAspect):
     '''
     Watch the quote for given conditions and provide an
     Offer.  Such as OfferFreeGift.
     '''
     minimum = PriceField()
+"""

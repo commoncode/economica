@@ -25,6 +25,17 @@ class BaseSettings(cbs.BaseSettings):
     # Security Settings
     SECRET_KEY = 'j$&pgre2x3kz-t-0w-g#js*i#md!id9xfy%e&_w83$)1g$3p2*'
 
+    # CQRS Settings
+    CQRS_SERIALIZE = False
+
+    @property
+    def MIDDLEWARE_CLASSES(self):
+        return (
+            'django.contrib.sessions.middleware.SessionMiddleware',
+            'django.middleware.common.CommonMiddleware',
+            'django.contrib.auth.middleware.AuthenticationMiddleware',
+        )
+
     @property
     def INSTALLED_APPS(self):
         contrib = (
@@ -47,13 +58,9 @@ class BaseSettings(cbs.BaseSettings):
 
         local = (
             # Put here the project's apps
-            'commercia.campaigns',
-            'commercia.coupons',
-            'commercia.offers',
-            'commercia.products',
-            'commercia.promotions',
-            'commercia.quotes',
-            'commercia.services',
+            'offers',
+            'products',
+            'quotes',
         )
 
         return contrib + third_party + local

@@ -31,7 +31,7 @@ class Product(Resource, ImageMixin):
     # title
     # slug
 
-    category = models.ForeignKey('Category', related_name='products')
+    # category = models.ForeignKey('Category', related_name='products')
     description = models.TextField(blank=True)
     sku = models.CharField(blank=True, max_length=512)
 
@@ -120,8 +120,8 @@ class Vehicle(Product):
     year = models.DateField()
 
 
+"""
 # Variants
-
 class Variant(CQRSModel):
     '''
     Product Variant.
@@ -134,7 +134,6 @@ class Variant(CQRSModel):
 
 
 # Variant Aspects
-
 class VariantAspect(CQRSPolymorphicModel):
     variant = models.ForeignKey('Variant', related_name='aspects')
 
@@ -149,13 +148,12 @@ class VariantShadeAspect(VariantAspect):
 
 class VariantColorAspect(VariantAspect):
     color = models.ForeignKey('Color')
+"""
 
-
+"""
 #
 # Aspect Qualities
 #
-
-# @@@ push these out to a separate app.
 class AspectQuality(CQRSPolymorphicModel, SlugMixin, TitleMixin):
     # title
     # slug
@@ -196,12 +194,12 @@ class Property(AspectQuality):
     # slug
 
     value = models.CharField(max_length=256)
+"""
 
-
+"""
 #
 # Variant Templates
 #
-
 class VariantTemplate(CQRSModel):
     '''
     Variant Templates are used to define re-usable
@@ -234,12 +232,12 @@ class VariantTemplateAspectQuality(CQRSModel):
 
     variant_template_aspect = models.ForeignKey('VariantTemplateAspect')
     aspect_quality = models.ForeignKey('AspectQuality')
+"""
 
-
+"""
 #
 # Categories
 #
-
 class Category(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
     # title
     # slug
@@ -249,8 +247,8 @@ class Category(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
 
     def __unicode__(self):
         return self.title
-
-
+"""
+"""
 # TODO Create an abstract pattern to express the re-usable Aspect /
 # AspectInstance / AspectRule pattern
 class SmartCollection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
@@ -283,3 +281,4 @@ class SmartCollectionAspect(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
     # is_enabled
 
     rules = models.ForeignKey('SmartCollectionAspectRule')
+"""

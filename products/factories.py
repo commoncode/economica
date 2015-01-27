@@ -6,9 +6,7 @@ import factory
 
 from django.utils.text import slugify
 
-from commercia.fakers import (
-    cosmetics, garments, lorem_ipsum, meals, software, vehicles
-)
+from fakers import cosmetics, garments, lorem_ipsum, meals, software, vehicles
 from .models import Category
 
 
