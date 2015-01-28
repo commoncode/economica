@@ -10,18 +10,7 @@ from entropy.base import (
 from entropy.fields import PriceField
 from images.mixins import ImageMixin
 
-"""
-#
-# Collections
-#
-class Collection(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
-    '''
-    An arbitrary Collection of Offers according to Promotional themes.
-    '''
-
-    def __unicode__(self):
-        return self.title
-"""
+from .collections import Collection
 
 
 #

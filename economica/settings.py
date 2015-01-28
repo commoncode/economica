@@ -57,7 +57,8 @@ class BaseSettings(cbs.BaseSettings):
         )
 
         local = (
-            # Put here the project's apps
+            'aspects',
+            'categories',
             'offers',
             'products',
             'quotes',
